@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>λ | Register</title>
+    <link rel="stylesheet" href="/static/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/form.css" type="text/css">
+    
+    {{ template "SharedHead" . }}
+</head>
+
+<body>
+    <header>
+        <div class="form-top">
+            <div class="logo">λ</div>
+            Register
+        </div>
+    </header>
+    <main>
+        <div class="form-wrapper">
+            <div id="errorArea"></div>
+            <form action="/api/user/new" method="POST" id="registerForm" onsubmit="return register();">
+                <input type="text" name="username" placeholder="Username">
+                <input type="password" name="password" placeholder="Password">
+                <input type="password" name="password_confirm" placeholder="Confirm Password">
+                <div class="g-recaptcha" data-sitekey="{{ .RecaptchaSiteKey }}"></div>
+                <input type="submit" value="Register">
+            </form>
+        </div>
+        <div class="center-text"><a href="/login">Sign in to existing account</a></div>
+    </main>
+    <script src="/static/js/all.js" defer></script>
+    <script src="/static/js/register.js" defer></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</body>
+
+</html>

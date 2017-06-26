@@ -1,0 +1,54 @@
+.upload-container li {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin: 4px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
+    overflow: hidden;
+}
+
+.upload-container li.selected {
+    background-color: #afcfff;
+}
+
+.upload-container li.selected a img {
+    opacity: 0.4;
+}
+
+.upload-container li a {
+    width: 100%;
+    height: 100%;
+}
+
+.upload-container li a img.wide {
+    height: 100%;
+}
+
+.upload-container li a img.tall {
+    width: 100%;
+}
+
+.upload-container {
+    margin: 10px;
+    max-width: 800px;
+}
+
+.navRow {
+    text-align: center;
+}
+
+.navRow a {
+    background: rgba(240,240,240,0.8);
+    border: 1px solid #bbbbbb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border-radius: 3px;
+    color: #666;
+    height: 40px;
+    font-size: 120%;
+    padding: 10px;
+}
+
+.navRow a:hover {
+    background: #f0f0f0;
+}

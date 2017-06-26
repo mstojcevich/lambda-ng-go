@@ -1,0 +1,92 @@
+.top-bar {
+    background: none;
+}
+
+main {
+    z-index: 1;
+    max-height: 96.2%;
+    display: flex;
+}
+
+.paste-area {
+    background: #232323;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 99%;
+    border: none;
+    resize: none;
+    color: #fff;
+    padding: 0 24px !important;
+    font-family: monospace;
+    outline: none;
+}
+
+pre {
+    margin: 0;
+}
+
+.bottom-buttons {
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #444;
+    width: 100%;
+    max-width: 600px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 3;
+}
+
+.bottom-buttons a {
+    width: 50%;
+}
+
+.bottom-buttons div {
+    padding: 10px;
+    text-align: center;
+    color: #eee;
+    transition-duration: 0.2s;
+}
+
+.bottom-buttons div.enabled {
+    background-color: #888;
+}
+
+.bottom-buttons div.submit {
+    background-color: #268bd2;
+}
+
+.topbar-toggle {
+    text-decoration: none;
+    color: #4a4a4a;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 200%;
+}
+
+.time-remaining {
+    color: #4a4a4a;
+    position: fixed;
+    font-size: 200%;
+    right: 4px;
+    top: 6px;
+}
+
+body {
+    background: #232323;
+}
+
+.top-bar ul li a:link,.top-bar ul li a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+.plaque {
+    background: #333;
+}
+
+pre {
+    width: 100%;
+}

@@ -1,0 +1,22 @@
+.error-lenny, .error-text {
+    text-align: center;
+}
+
+.error-lenny {
+    font-size: 64pt;
+}
+
+.error-text {
+    font-size: 32pt;
+}
+
+main {
+    font-family: "Arial","Helvetica Neue",sans-serif;
+    opacity: 0.6;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    text-align: center;
+}

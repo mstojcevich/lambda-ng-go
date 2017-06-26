@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>λ | Paste</title>
+    <link rel="stylesheet" href="/static/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/paste.css" type="text/css">
+    
+    
+
+<link rel="apple-touch-icon" sizes="57x57" href="/static/img/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/static/img/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/static/img/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/static/img/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/static/img/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/static/img/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/static/img/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/static/img/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/static/img/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/static/img/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+<link rel="manifest" href="/static/other/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/static/img/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<meta name="viewport" content="width=device-width">
+
+
+</head>
+
+<body>
+    
+
+<header>
+    <div class="top-bar">
+        <div class="content">
+            <ul class="unimportant">
+                <li><a href="/" class="smallcaps bold">home</a></li>
+            </ul>
+            <div class="right">
+                <ul>
+                    <li><a href="/paste" class="smallcaps bold">paste</a></li>
+                    <li><a href="/upload" class="smallcaps bold">upload</a></li>
+                </ul>
+                <ul>
+                    <li><a href="/login" class="plaque" id="topbar-account">Loading...</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="user-dropdown hidden" id="user-dropdown">
+        <ul>
+            <li><a href="/user/manage">Manage Account</a></li>
+            <li><a href="/user/uploads">Past Uploads</a></li>
+            <li><a href="#" onclick="signOut()">Sign Out</a></li>
+        </ul>
+    </div>
+</header>
+
+
+
+    <main>
+        <label for="paste-area" style="display: none" hidden></label><textarea class="paste-area" id="paste-area"></textarea>
+    </main>
+
+    <footer>
+        <div class="bottom-buttons">
+            <a href="#" onclick="toggleCode()">
+                <div id="codeLabel">CODE: NO</div>
+            </a>
+            <a href="#">
+                <div class="submit" onclick="submitPaste()">SUBMIT</div>
+            </a>
+        </div>
+    </footer>
+
+    <script src="/static/js/all.js" defer></script>
+    <script src="/static/js/topbar.js" defer></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.6/sjcl.min.js" defer></script>
+    <script src="/static/js/paste.js" defer></script>
+</body>
+
+</html>

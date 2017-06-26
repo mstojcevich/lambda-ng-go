@@ -91,7 +91,7 @@ func API(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
 
 	if err != nil {
-		uploadError(ctx, "You must be logged in to upload", fasthttp.StatusUnprocessableEntity)
+		uploadError(ctx, "You must be logged in to upload", fasthttp.StatusUnauthorized)
 		return
 	}
 

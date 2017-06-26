@@ -1,5 +1,5 @@
 function register() {
-    let registerForm = document.getElementById(registerForm);
+    let registerForm = document.getElementById("registerForm");
     let fData = new FormData(registerForm);
 
     let request = new XMLHttpRequest();
@@ -18,6 +18,7 @@ function register() {
                     response.errors.forEach(function(error) {
                         errorArea.innerHTML += "<div class=\"form-error\">" + error + "</div>";
                     });
+                    console.log("ayy");
                 }
             } catch(ex) {
                 console.error(ex);
@@ -27,4 +28,8 @@ function register() {
             console.error(request.responseText);
         }
     }
+
+    request.send(fData);
+
+    return false; // Get rid of browser's default action
 }

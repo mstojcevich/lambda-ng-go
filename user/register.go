@@ -138,7 +138,7 @@ func RegisterAPI(ctx *fasthttp.RequestCtx) {
 	result := RegisterResult{Errors: nil, APIKey: apiKey, Success: true}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -152,7 +152,7 @@ func registerError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := RegisterResult{Errors: []string{errStr}, Success: false}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return

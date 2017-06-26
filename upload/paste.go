@@ -118,7 +118,7 @@ func PutPasteAPI(ctx *fasthttp.RequestCtx) {
 	result := PasteResponse{URL: filename}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -132,7 +132,7 @@ func pasteError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := PasteResponse{Errors: []string{errStr}}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return

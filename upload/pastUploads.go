@@ -86,7 +86,7 @@ func PastUploadsAPI(ctx *fasthttp.RequestCtx) {
 	numUploadRow := numUploadsStmt.QueryRow(user.ID)
 	err = numUploadRow.Scan(&numUploads)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		pastUploadError(ctx, "Error looking for past uploads", fasthttp.StatusInternalServerError)
 		return
 	}
@@ -94,7 +94,7 @@ func PastUploadsAPI(ctx *fasthttp.RequestCtx) {
 
 	rows, err := getUploadsStmt.Query(user.ID, n, (pageNum-1)*n)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		pastUploadError(ctx, "Error looking for past uploads", fasthttp.StatusInternalServerError)
 		return
 	}
@@ -105,7 +105,7 @@ func PastUploadsAPI(ctx *fasthttp.RequestCtx) {
 
 		err = rows.Scan(&pastUpload.ID, &pastUpload.Name, &pastUpload.LocalName, &pastUpload.Extension, &pastUpload.HasThumbnail)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 			pastUploadError(ctx, "Error looking for past uploads", fasthttp.StatusInternalServerError)
 			return
 		}
@@ -115,7 +115,7 @@ func PastUploadsAPI(ctx *fasthttp.RequestCtx) {
 
 	resultJSON, err := response.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -129,7 +129,7 @@ func pastUploadError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := PastUploads{Errors: []string{errStr}}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return

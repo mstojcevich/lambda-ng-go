@@ -75,7 +75,7 @@ func LoginAPI(ctx *fasthttp.RequestCtx) {
 	resultJSON, err := result.MarshalJSON()
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -96,7 +96,7 @@ func GetSessionAPI(ctx *fasthttp.RequestCtx) {
 	response := SessionResult{UserID: user.ID, Username: user.Username, APIKey: user.APIKey}
 	responseJSON, err := response.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -133,7 +133,7 @@ func loginError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := LoginResult{Errors: []string{errStr}, Success: false}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -148,7 +148,7 @@ func sessionGetError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := SessionResult{Errors: []string{errStr}}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return

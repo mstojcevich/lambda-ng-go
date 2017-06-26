@@ -129,7 +129,7 @@ func API(ctx *fasthttp.RequestCtx) {
 		// Generate a random filename, using the extension from the original upload
 		filename, err := genFilename()
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 			uploadError(ctx, "Couldn't find a filename that wasn't in use", fasthttp.StatusInternalServerError)
 			return
 		}
@@ -191,14 +191,14 @@ func API(ctx *fasthttp.RequestCtx) {
 			// Register the thumbnail in the database
 			_, err = addThumbnailStmt.Exec(filename, "/"+thumbURL)
 			if err != nil {
-				log.Fatalln(err)
+				log.Println(err)
 				return
 			}
 
 			// Mark that the upload has a thumbnail
 			_, err = markThumbnailStmt.Exec(fileID)
 			if err != nil {
-				log.Fatalln(err)
+				log.Println(err)
 				return
 			}
 		}()
@@ -208,7 +208,7 @@ func API(ctx *fasthttp.RequestCtx) {
 	responseJSON, err := response.MarshalJSON()
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -259,7 +259,7 @@ func DeleteAPI(ctx *fasthttp.RequestCtx) {
 		// Delete
 		_, err = deletePasteStmt.Exec(pasteID)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 			deleteError(ctx, "An error occurred while deleting paste", fasthttp.StatusInternalServerError)
 			return
 		}
@@ -273,7 +273,7 @@ func DeleteAPI(ctx *fasthttp.RequestCtx) {
 		// Delete
 		_, err = deleteFileStmt.Exec(uploadID)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 			deleteError(ctx, "An error occurred while deleting file", fasthttp.StatusInternalServerError)
 			return
 		}
@@ -325,7 +325,7 @@ func genFilename() (string, error) {
 		var exists bool
 		err := fileExistsStmt.QueryRow(name).Scan(&exists)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 			return "", err
 		}
 
@@ -362,7 +362,7 @@ func uploadError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := Response{Errors: []string{errStr}}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return
@@ -376,7 +376,7 @@ func deleteError(ctx *fasthttp.RequestCtx, errStr string, statusCode int) {
 	result := DeleteResponse{Errors: []string{errStr}}
 	resultJSON, err := result.MarshalJSON()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
 		ctx.SetContentType("text/json")
 		return

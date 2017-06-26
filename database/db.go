@@ -1,8 +1,6 @@
 package database
 
 import (
-	"fmt"
-
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // Needed for postgres DB
 	"github.com/mstojcevich/lambda-ng-go/config"
@@ -59,9 +57,7 @@ CREATE TABLE IF NOT EXISTS thumbnails (
 var DB = initDatabase(config.DBHost, config.DBPort, config.DBUser, config.DBPass, config.DBName)
 
 func initDatabase(host string, port uint16, user string, pass string, dbName string) *sqlx.DB {
-	db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%d "+
-		"user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, pass, dbName))
+	db, err := sqlx.Connect("postgres", config.DBString)
 
 	// Error establishing connection to DB
 	if err != nil {

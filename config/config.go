@@ -31,20 +31,8 @@ var MaxUploadSize = 15
 // UploadDir is the directory that uploads are stored in
 var UploadDir = "files/"
 
-// DBUser is the username to connect to postgres with
-var DBUser = "lambda_dev"
-
-// DBPass is the password to connect to postgres with
-var DBPass = "testing"
-
-// DBHost is the hostname of the postgres server
-var DBHost = "localhost"
-
-// DBPort is the port postgres is running on
-var DBPort uint16 = 5432
-
-// DBName is the name of the postgres database to use
-var DBName = "lambda_dev"
+// DBString is the string to use to connect to the database. It is the second argument to db.Connect
+var DBString = "host=localhost port=5432 user=lambda_dev password=testing dbname=lambda_dev sslmode=disable"
 
 // MinifiedAssets is whether minified versions of js and css should be used
 var MinifiedAssets bool // TODO implement
@@ -82,35 +70,8 @@ func init() {
 		UploadDir = s
 	}
 
-	s, exists = os.LookupEnv("LMDA_DB_USER")
+	s, exists = os.LookupEnv("LMDA_DB_CONNSTR")
 	if exists {
-		DBUser = s
-	}
-
-	s, exists = os.LookupEnv("LMDA_DB_PASS")
-	if exists {
-		DBPass = s
-	}
-
-	s, exists = os.LookupEnv("LMDA_DB_NAME")
-	if exists {
-		DBName = s
-	}
-
-	s, exists = os.LookupEnv("LMDA_DB_HOST")
-	if exists {
-		DBHost = s
-	}
-
-	s, exists = os.LookupEnv("LMDA_DB_PORT")
-	if exists {
-		dbPort, err := strconv.Atoi(s)
-		if err != nil {
-			log.Println("Error parsing DB port from env var")
-			log.Println(err)
-		} else {
-
-		}
-		DBPort = uint16(dbPort)
+		DBString = s
 	}
 }

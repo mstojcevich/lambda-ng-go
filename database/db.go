@@ -54,9 +54,9 @@ CREATE TABLE IF NOT EXISTS thumbnails (
 `
 
 // DB is a connection to the primary Lambda database
-var DB = initDatabase(config.DBHost, config.DBPort, config.DBUser, config.DBPass, config.DBName)
+var DB = initDatabase()
 
-func initDatabase(host string, port uint16, user string, pass string, dbName string) *sqlx.DB {
+func initDatabase() *sqlx.DB {
 	db, err := sqlx.Connect("postgres", config.DBString)
 
 	// Error establishing connection to DB

@@ -13,6 +13,7 @@ import (
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/recaptcha"
+	"github.com/mstojcevich/lambda-ng-go/user/session"
 	"github.com/valyala/fasthttp"
 )
 
@@ -128,6 +129,10 @@ func RegisterAPI(ctx *fasthttp.RequestCtx) {
 		registerError(ctx, "Error creating user. Please try again.", fasthttp.StatusInternalServerError)
 		return
 	}
+
+	// Sign the user in
+	sess := session.Sessions.StartFasthttp(ctx)
+	sess.Set("api_key", apiKey)
 
 	// Return the result as JSON
 	result := RegisterResult{Errors: nil, APIKey: apiKey, Success: true}

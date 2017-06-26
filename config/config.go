@@ -81,4 +81,36 @@ func init() {
 	if exists {
 		UploadDir = s
 	}
+
+	s, exists = os.LookupEnv("LMDA_DB_USER")
+	if exists {
+		DBUser = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_DB_PASS")
+	if exists {
+		DBPass = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_DB_NAME")
+	if exists {
+		DBName = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_DB_HOST")
+	if exists {
+		DBHost = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_DB_PORT")
+	if exists {
+		dbPort, err := strconv.Atoi(s)
+		if err != nil {
+			log.Println("Error parsing DB port from env var")
+			log.Println(err)
+		} else {
+
+		}
+		DBPort = uint16(dbPort)
+	}
 }

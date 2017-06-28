@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"log"
+	"time"
 
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
@@ -85,8 +86,13 @@ func main() {
 	router.PanicHandler = panicHandler
 
 	s := &fasthttp.Server{
+		Name:               "Lambda",
 		Handler:            router.Handler,
 		MaxRequestBodySize: 1024 * 1024 * config.MaxUploadSize,
+		MaxConnsPerIP:      1024,
+		ReadTimeout:        2 * time.Minute,
+		WriteTimeout:       2 * time.Minute,
+		MaxRequestsPerConn: 512,
 	}
 
 	log.Fatal(s.ListenAndServe(":8080"))

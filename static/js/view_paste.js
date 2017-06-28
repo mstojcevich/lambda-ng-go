@@ -36,5 +36,7 @@ function decryptPaste(encPaste) {
 
     document.getElementById("paste-area").innerText = sjcl.decrypt(key, sjclPlain);
 
-    hljs.highlightBlock(document.getElementById("paste-area"));
+    if(json.is_code) {
+        hljs.highlightBlock(document.getElementById("paste-area"));
+    }
 }

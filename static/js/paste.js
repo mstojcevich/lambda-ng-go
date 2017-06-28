@@ -1,5 +1,7 @@
 requiresLogin = true;
 
+var isCode = false;
+
 document.addEventListener("DOMContentLoaded", function() {
     getSessionInfo(function() {}, function() {
         // Redirect the user to login if they aren't signed in
@@ -15,15 +17,15 @@ function submitPaste() {
     let encryptedPaste = encrypt(pastePlaintext, encryptionKey);
     
     let encryptedPasteObj = JSON.parse(encryptedPaste);
-    encryptedPasteObj.is_code = false; // TODO have the code button do something
+    encryptedPasteObj.is_code = isCode;
     encryptedPaste = JSON.stringify(encryptedPasteObj);
 
-    putPaste(encryptedPaste, function(url) {
+    putPaste(encryptedPaste, isCode, function(url) {
         window.location.href = "/" + url + "#" + encryptionKey;
     });
 }
 
-function putPaste(encryptedPaste, onFinish) {
+function putPaste(encryptedPaste, isCode, onFinish) {
     let request = new XMLHttpRequest();
     request.open("POST", "/api/paste", true);
 
@@ -51,6 +53,7 @@ function putPaste(encryptedPaste, onFinish) {
 
     let data = new FormData();
     data.append("paste", encryptedPaste);
+    data.append("is_code", isCode);
 
     request.send(data);
 }
@@ -71,4 +74,14 @@ function genEncKey(length) {
 
 function encrypt(text, key) {
     return sjcl.encrypt(key, text);
+}
+
+function toggleCode() {
+    if(!isCode) {
+        isCode = true;
+        document.getElementById("codeLabel").innerText = "CODE: YES";
+    } else {
+        isCode = false;
+        document.getElementById("codeLabel").innerText = "CODE: NO";
+    }
 }

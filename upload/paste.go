@@ -2,10 +2,10 @@ package upload
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/mstojcevich/lambda-ng-go/database"
@@ -97,8 +97,7 @@ func PutPasteAPI(ctx *fasthttp.RequestCtx) {
 	}
 
 	pasteText := string(ctx.FormValue("paste"))
-	fmt.Printf("isCode: %s\n", string(ctx.FormValue("is_code")))
-	fmt.Printf(pasteText)
+	isCode, _ := strconv.ParseBool(string(ctx.FormValue("is_code")))
 
 	// Generate a name for the paste
 	filename, err := genFilename()
@@ -108,7 +107,7 @@ func PutPasteAPI(ctx *fasthttp.RequestCtx) {
 	}
 
 	// Save the paste into the database
-	_, err = addPasteStmt.Exec(user.ID, filename, pasteText, false, time.Now())
+	_, err = addPasteStmt.Exec(user.ID, filename, pasteText, isCode, time.Now())
 	if err != nil {
 		pasteError(ctx, "Error saving paste", fasthttp.StatusInternalServerError)
 		return

@@ -15,6 +15,7 @@ import (
 	bimg "gopkg.in/h2non/bimg.v1"
 
 	"github.com/dchest/uniuri"
+	"github.com/dutchcoders/go-clamd"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/user"
@@ -44,6 +45,8 @@ var thumbnailOptions = bimg.Options{
 // Set used to quickly check if an extension is allowed
 var allowedExtensionsSet = map[string]struct{}{}
 
+var clamav *clamd.Clamd
+
 // uploadTplContext is context used when rendering the upload template
 type uploadTplContext struct {
 	AllowedExtensions string
@@ -58,6 +61,10 @@ func init() {
 	}
 
 	createUploadTemplate()
+
+	if config.ClamAVScanning {
+		clamav = clamd.NewClamd(config.ClamSock)
+	}
 }
 
 func createUploadTemplate() {
@@ -177,8 +184,28 @@ func API(ctx *fasthttp.RequestCtx) {
 		responseURLs = append(responseURLs, fullFilename)
 		responseURL = fullFilename
 
-		// Spawn off a worker to create a thumbnail
+		// Spawn off a worker to scan with clamav and create a thumbnail
 		go func() {
+			if config.ClamAVScanning {
+				response, err := clamav.ScanStream(bytes.NewBuffer(b), make(chan bool))
+				if err != nil {
+					fmt.Println("Error scanning for viruses")
+					fmt.Println(err)
+				} else { // Virus scan successfully ran
+					rsp := <-response
+					if rsp.Status == clamd.RES_FOUND { // Malware found
+						fmt.Println("Malware found in " + filename)
+						fmt.Println(rsp)
+
+						// Delete the file
+						os.Remove(path)
+						deleteFileStmt.Exec(fileID)
+
+						return // End goroutine so thumbnail isn't made
+					}
+				}
+			}
+
 			img := bimg.NewImage(b)
 			thumb, err := img.Process(thumbnailOptions)
 			if err != nil {

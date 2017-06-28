@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -36,6 +37,12 @@ var DBString = "host=localhost port=5432 user=lambda_dev password=testing dbname
 
 // MinifiedAssets is whether minified versions of js and css should be used
 var MinifiedAssets bool // TODO implement
+
+// ClamAVScanning is whether or not uploads should be scanned with ClamAV
+var ClamAVScanning bool
+
+// ClamSock is the path to the ClamAV socket file
+var ClamSock = "/var/lib/clamav/clamd.sock"
 
 func init() {
 	s, exists := os.LookupEnv("LMDA_RECAPTCHA_SECRET")
@@ -73,5 +80,21 @@ func init() {
 	s, exists = os.LookupEnv("LMDA_DB_CONNSTR")
 	if exists {
 		DBString = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_CLAMAV")
+	if exists {
+		cav, err := strconv.ParseBool(s)
+		if err != nil {
+			fmt.Println("Error parsing LMDA_CLAMAV")
+			fmt.Println(err)
+		} else {
+			ClamAVScanning = cav
+		}
+	}
+
+	s, exists = os.LookupEnv("LMDA_CLAM_SOCK")
+	if exists {
+		ClamSock = s
 	}
 }

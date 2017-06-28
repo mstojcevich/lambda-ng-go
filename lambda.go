@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"io/ioutil"
 	"log"
 	"time"
 
@@ -11,42 +9,15 @@ import (
 
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/fileserve"
-	tplt "github.com/mstojcevich/lambda-ng-go/template"
+	"github.com/mstojcevich/lambda-ng-go/index"
 	"github.com/mstojcevich/lambda-ng-go/upload"
 	"github.com/mstojcevich/lambda-ng-go/user"
-
-	"text/template"
 )
-
-func init() {
-	createIndexTemplate()
-}
-
-func createIndexTemplate() {
-	// Create the template
-	t, err := template.ParseFiles("html/index.html", "html/partials/shared_head.html", "html/partials/topbar.html")
-	if err != nil {
-		panic(err)
-	}
-
-	// Render the template into a byte buffer
-	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
-	if err != nil {
-		panic(err)
-	}
-
-	// Output the template to a file
-	ioutil.WriteFile("html/compiled/index.html", tpl.Bytes(), 0644)
-}
-
-func Index(ctx *fasthttp.RequestCtx) {
-	ctx.SendFile("html/compiled/index.html")
-}
 
 func main() {
 	router := fasthttprouter.New()
-	router.GET("/", Index)
+	router.GET("/", index.Page)
+	router.GET("/nojs/", index.PageNoJS)
 
 	// User
 	router.GET("/login", user.LoginPage)

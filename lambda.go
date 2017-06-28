@@ -27,6 +27,7 @@ func main() {
 	router.PUT("/api/user/new", user.RegisterAPI)
 	router.GET("/api/session", user.GetSessionAPI)
 	router.GET("/user/manage", user.ManagePage)
+	router.GET("/nojs/user/manage", user.ManagePageNoJS)
 	router.DELETE("/api/session", user.LogoutAPI)
 
 	// Past uploads

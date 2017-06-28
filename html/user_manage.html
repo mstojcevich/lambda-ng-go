@@ -5,18 +5,36 @@
     <meta charset="UTF-8">
     <title>λ | Manage Account</title>
     <link rel="stylesheet" href="/static/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/user_manage.css" type="text/css">
 </head>
 
 <body>
     {{ template "TopBar" . }}
 
     <main class="content">
-        API Key: <span id="apiKey" style="font-weight: bold">Loading...</span>
+        {{ if .NoJS }}
+            {{ if .SignedIn }}
+                <ul class="user-manage-buttons">
+                    <li>
+                        <a class="btn" href="/nojs/user/uploads">Past Uploads</a>
+                    </li>
+                    <li>
+                        <a class="btn" href="/nojs/user/signOut">Sign Out</a>
+                    </li>
+                </ul>
+
+                API Key: <span id="apiKey" style="font-weight: bold">{{ .Session.APIKey | html }}</span>
+            {{ end }}
+        {{ else }}
+            API Key: <span id="apiKey" style="font-weight: bold">Loading...</span>
+        {{ end }}
     </main>
 
-    <script src="/static/js/all.js" defer></script>
-    <script src="/static/js/topbar.js" defer></script>
-    <script src="/static/js/user_manage.js" defer></script>
+    {{ if not .NoJS }}
+        <script src="/static/js/all.js" defer></script>
+        <script src="/static/js/topbar.js" defer></script>
+        <script src="/static/js/user_manage.js" defer></script>
+    {{ end }}
 </body>
 
 </html>

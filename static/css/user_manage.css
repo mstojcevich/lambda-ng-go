@@ -1,0 +1,13 @@
+.user-manage-buttons {
+    list-style: none;
+}
+
+.user-manage-buttons > li {
+    display: inline;
+}
+
+.user-manage-buttons > li > a {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+}

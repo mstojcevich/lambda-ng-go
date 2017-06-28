@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io/ioutil"
 
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/valyala/fasthttp"
 )
 
@@ -21,7 +22,7 @@ func createUserManageTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, nil)
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

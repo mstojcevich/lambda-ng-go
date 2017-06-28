@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/mstojcevich/lambda-ng-go/database"
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user"
 	"github.com/valyala/fasthttp"
 )
@@ -30,7 +31,7 @@ func createPasteTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, nil)
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

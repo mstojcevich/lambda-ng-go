@@ -27,8 +27,10 @@
         </div>
     </footer>
 
-    <script type="text/javascript" src="/static/js/all.js" defer></script>
-    <script type="text/javascript" src="/static/js/topbar.js" defer></script>
+    {{ if not .NoJS }}
+        <script type="text/javascript" src="/static/js/all.js" defer></script>
+        <script type="text/javascript" src="/static/js/topbar.js" defer></script>
+    {{ end }}
 </body>
 
 </html>

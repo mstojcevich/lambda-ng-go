@@ -25,6 +25,7 @@ var createUserStmt, createUserErr = database.DB.Prepare(`INSERT INTO users (user
 var isAlnum = regexp.MustCompile(`^[A-Za-z0-9]+$`).MatchString
 
 type registerTplContext struct {
+	NoJS             bool
 	RecaptchaSiteKey string
 }
 

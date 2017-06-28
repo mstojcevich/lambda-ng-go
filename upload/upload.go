@@ -19,6 +19,7 @@ import (
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/user"
+
 	"github.com/valyala/fasthttp"
 )
 
@@ -49,6 +50,7 @@ var clamav *clamd.Clamd
 
 // uploadTplContext is context used when rendering the upload template
 type uploadTplContext struct {
+	NoJS              bool
 	AllowedExtensions string
 	MaxFilesize       int
 }

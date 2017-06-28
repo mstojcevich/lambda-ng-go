@@ -12,7 +12,15 @@
                     <li><a href="/upload" class="smallcaps bold">upload</a></li>
                 </ul>
                 <ul>
-                    <li><a href="/login" class="plaque" id="topbar-account">Loading...</a></li>
+                    {{ if not .NoJS }}
+                        <li><a href="/login" class="plaque" id="topbar-account">Loading...</a></li>
+                    {{ else }}
+                        {{ if .SignedIn }}
+                            <li><a href="/login" class="plaque" id="topbar-account">{{ .Session.Username | html }}</a></li>
+                        {{ else }}
+                            <li><a href="/login" class="plaque" id="topbar-account">Not Signed In</a></li>
+                        {{ end }}
+                    {{ end }}
                 </ul>
             </div>
         </div>

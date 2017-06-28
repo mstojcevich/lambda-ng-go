@@ -11,6 +11,7 @@ import (
 
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/fileserve"
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/upload"
 	"github.com/mstojcevich/lambda-ng-go/user"
 
@@ -30,7 +31,7 @@ func createIndexTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, nil)
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

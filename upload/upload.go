@@ -15,9 +15,10 @@ import (
 	bimg "gopkg.in/h2non/bimg.v1"
 
 	"github.com/dchest/uniuri"
-	"github.com/dutchcoders/go-clamd"
+	clamd "github.com/dutchcoders/go-clamd"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user"
 
 	"github.com/valyala/fasthttp"
@@ -50,7 +51,8 @@ var clamav *clamd.Clamd
 
 // uploadTplContext is context used when rendering the upload template
 type uploadTplContext struct {
-	NoJS              bool
+	tplt.CommonTemplateCtx
+
 	AllowedExtensions string
 	MaxFilesize       int
 }

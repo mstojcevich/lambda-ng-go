@@ -13,6 +13,7 @@ import (
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/recaptcha"
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user/session"
 	"github.com/valyala/fasthttp"
 )
@@ -25,7 +26,8 @@ var createUserStmt, createUserErr = database.DB.Prepare(`INSERT INTO users (user
 var isAlnum = regexp.MustCompile(`^[A-Za-z0-9]+$`).MatchString
 
 type registerTplContext struct {
-	NoJS             bool
+	tplt.CommonTemplateCtx
+
 	RecaptchaSiteKey string
 }
 

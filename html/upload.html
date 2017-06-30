@@ -22,26 +22,41 @@
         </noscript>
 
         <h1 class="upload-label">Upload</h1>
-        <h2 class="upload-instruction">Drag and drop or click <a href="#" onclick="document.getElementById('chooseFile').click();return false;">here</a>            to upload a file</h2>
+        
+        {{ if .NoJS }}
+            <form action="/api/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" id="chooseFile" name="file" id="file" accept="{{ .AllowedExtensions }}">
+                <input type="submit">
+            </form>
+        {{ else }}
+            <h2 class="upload-instruction">Drag and drop or click <a href="#" onclick="document.getElementById('chooseFile').click();return false;">here</a>            to upload a file</h2>
+        {{ end }}
+
         <p>By uploading a file, you agree that it is your original content. All uploads must adhere to the copyright laws of
             the United States. If a file is found to be infringing, it will be removed without warning. All efforts will
             be made to comply with takedown requests immediately.</p>
+
         <ul class="errors" id="errorList">
         </ul>
         <ul class="uploads finished" id="finished-uploads">
         </ul>
         <ul class="uploads" id="ongoing-uploads">
         </ul>
-        <input type="file" id="chooseFile" style="visibility: hidden;" accept="{{ .AllowedExtensions }}" multiple>
+
+        {{ if not .NoJS }}
+            <input type="file" id="chooseFile" style="visibility: hidden;" accept="{{ .AllowedExtensions }}" multiple>
+        {{ end }}
     </main>
 
-    <script type="text/javascript">
-        const maxFilesize = 1024 * 1024 * {{ .MaxFilesize }};
-    </script>
+    {{ if not .NoJS }}
+        <script type="text/javascript">
+            const maxFilesize = 1024 * 1024 * {{ .MaxFilesize }};
+        </script>
 
-    <script src="/static/js/all.js" defer></script>
-    <script src="/static/js/topbar.js" defer></script>
-    <script src="/static/js/upload.js" defer></script>
+        <script src="/static/js/all.js" defer></script>
+        <script src="/static/js/topbar.js" defer></script>
+        <script src="/static/js/upload.js" defer></script>
+    {{ end }}
 </body>
 
 </html>

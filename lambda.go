@@ -39,6 +39,7 @@ func main() {
 
 	// Upload
 	router.GET("/upload", upload.Page)
+	router.GET("/nojs/upload", upload.PageNoJS)
 	router.POST("/api/upload", upload.API)
 	router.PUT("/api/upload", upload.API)
 	router.DELETE("/file/:name", upload.DeleteAPI)

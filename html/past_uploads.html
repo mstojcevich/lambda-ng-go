@@ -21,18 +21,50 @@
         <noscript>
             <h2>JavaScript appears to be blocked or disabled. This page and most of Lambda will not work without JavaScript enabled.</h2>
         </noscript>
-        <h2 id="pageNum">Loading...</h2>
+
+        {{ if .NoJS }}
+            <h2 id="pageNum">Page {{ .PageNum }} of {{ .NumPages }}</h2>
+        {{ else }}
+            <h2 id="pageNum">Loading...</h2>
+        {{ end }}
+
         <ul class="upload-container" id="uploads">
+            {{ if .NoJS }}
+                {{ range .PastUploads }}
+                    <li title="{{ .LocalName }}">
+                        <a href="/{{ .Name }}.{{ .Extension }}">
+                        {{ if .HasThumbnail }}
+                            <img src="/thumb_128x128_{{ .Name }}.jpg" alt="{{ .LocalName }}" class="wide">
+                        {{ else }}
+                            <img src="/generic/by-ext/{{ .Extension }}" alt="{{ .LocalName }}">
+                        {{ end }}
+                        </a>
+                    </li>
+                {{ end }}
+            {{ end }}
         </ul>
+        
         <div class="navRow">
-            <a href="" id="goBack" onclick="prevPage(); return false;" class="navButton hidden">Previous</a>
-            <a href="" id="goNext" onClick="nextPage(); return false;" class="navButton hidden">Next</a>
+            {{ if .NoJS }}
+                {{ if not (eq .PageNum 1) }}
+                    <a href="/nojs/user/uploads?page={{ add .PageNum -1 }}" id="goBack" onclick="prevPage(); return false;" class="navButton">Previous</a>
+                {{ end }}
+
+                {{ if not (eq .PageNum .NumPages) }}
+                    <a href="/nojs/user/uploads?page={{ add .PageNum 1 }}" id="goNext" onClick="nextPage(); return false;" class="navButton">Next</a>
+                {{ end }}
+            {{ else }}
+                <a href="" id="goBack" onclick="prevPage(); return false;" class="navButton hidden">Previous</a>
+                <a href="" id="goNext" onClick="nextPage(); return false;" class="navButton hidden">Next</a>
+            {{ end }}
         </div>
     </main>
 
-    <script src="/static/js/all.js" defer></script>
-    <script src="/static/js/topbar.js" defer></script>
-    <script src="/static/js/past_uploads.js" defer></script>
+    {{ if not .NoJS }}
+        <script src="/static/js/all.js" defer></script>
+        <script src="/static/js/topbar.js" defer></script>
+        <script src="/static/js/past_uploads.js" defer></script>
+    {{ end }}
 </body>
 
 </html>

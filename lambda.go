@@ -33,6 +33,7 @@ func main() {
 
 	// Past uploads
 	router.GET("/user/uploads", upload.PastUploadsPage)
+	router.GET("/nojs/user/uploads", upload.PastUploadsPageNoJS)
 	router.GET("/api/user/uploads", upload.PastUploadsAPI)
 	router.GET("/generic/by-ext/:extension", upload.GenericImageByExtension)
 

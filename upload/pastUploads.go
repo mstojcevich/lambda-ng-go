@@ -24,7 +24,11 @@ func init() {
 
 func createPastUploadsTemplate() {
 	// Create the template
-	t, err := template.ParseFiles("html/past_uploads.html", "html/partials/shared_head.html", "html/partials/topbar.html")
+	t := template.New("past_uploads.html")
+
+	t.Funcs(puFuncMap)
+
+	t, err := t.ParseFiles("html/past_uploads.html", "html/partials/shared_head.html", "html/partials/topbar.html")
 	if err != nil {
 		panic(err)
 	}

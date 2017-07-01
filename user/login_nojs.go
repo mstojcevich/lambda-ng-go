@@ -28,7 +28,7 @@ func LoginAPINoJS(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	ctx.Redirect("/", fasthttp.StatusFound)
+	ctx.Redirect("/nojs/", fasthttp.StatusFound)
 }
 
 func LoginPageNoJS(ctx *fasthttp.RequestCtx) {

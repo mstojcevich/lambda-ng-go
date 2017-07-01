@@ -37,6 +37,7 @@ func create404Template() {
 
 func Show404(ctx *fasthttp.RequestCtx) {
 	ctx.SendFile("html/compiled/404.html")
+	ctx.SetStatusCode(404)
 }
 
 // Serve serves an uploaded Lambda file or paste

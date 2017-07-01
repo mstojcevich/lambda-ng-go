@@ -16,3 +16,13 @@ func LogoutNoJS(ctx *fasthttp.RequestCtx) {
 	session.Sessions.DestroyFasthttp(ctx)
 	ctx.Redirect("/nojs/", fasthttp.StatusFound)
 }
+
+func LoginAPINoJS(ctx *fasthttp.RequestCtx) {
+	LoginAPI(ctx)
+
+	if ctx.Response.StatusCode() != fasthttp.StatusOK {
+		return
+	}
+
+	ctx.Redirect("/", fasthttp.StatusFound)
+}

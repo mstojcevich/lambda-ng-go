@@ -13,6 +13,10 @@
 <body>
     {{ template "TopBar" . }}
 
+    <noscript>
+        <span style="color: white;">Pastes need JavaScript enabled to function because they use end-to-end encryption</span>
+    </noscript>
+
     <main>
         <label for="paste-area" style="display: none" hidden></label><textarea class="paste-area" id="paste-area"></textarea>
     </main>

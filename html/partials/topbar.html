@@ -4,12 +4,21 @@
     <div class="top-bar">
         <div class="content">
             <ul class="unimportant">
-                <li><a href="/" class="smallcaps bold">home</a></li>
+                {{ if .NoJS }}
+                    <li><a href="/nojs/" class="smallcaps bold">home</a></li>
+                {{ else }}
+                    <li><a href="/" class="smallcaps bold">home</a></li>
+                {{ end }}
             </ul>
             <div class="right">
                 <ul>
-                    <li><a href="/paste" class="smallcaps bold">paste</a></li>
-                    <li><a href="/upload" class="smallcaps bold">upload</a></li>
+                    {{ if .NoJS }}
+                        <li><a href="/paste" class="smallcaps bold">paste (leave nojs)</a></li>
+                        <li><a href="/nojs/upload" class="smallcaps bold">upload</a></li>
+                    {{ else }}
+                        <li><a href="/paste" class="smallcaps bold">paste</a></li>
+                        <li><a href="/upload" class="smallcaps bold">upload</a></li>
+                    {{ end }}
                 </ul>
                 <ul>
                     {{ if not .NoJS }}

@@ -24,6 +24,8 @@
                     <p>
                         Looks like you have JavaScript disabled or NoScript blocking the login script. You need JavaScript enabled to use much of
                         Lambda, including to login. We respect your privacy and will not use JavaScript to track you.
+
+                        Check out <a href="/nojs/">the nojs version of Lambda</a>
                     </p>
                 </noscript>
             {{ end }}
@@ -38,7 +40,11 @@
                 <input type="submit" value="Sign In">
             </form>
         </div>
-        <div class="center-text"><a href="/register">Create an account</a></div>
+        <div class="center-text"><a href="/register">Create an account
+        {{ if .NoJS }}
+        (leaves NoJS)
+        {{ end }}
+        </a></div>
     </main>
 
     {{ if not .NoJS }}

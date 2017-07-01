@@ -99,6 +99,29 @@ func Page(ctx *fasthttp.RequestCtx) {
 // It requires authentication by either api key or session.
 // It is accessable at /api/upload via POST
 func API(ctx *fasthttp.RequestCtx) {
+	responseURLs := upload(ctx)
+	responseURL := ""
+	if len(responseURLs) > 0 {
+		responseURL = responseURLs[0]
+	} else {
+		return
+	}
+
+	response := Response{URL: responseURL, URLs: responseURLs, Errors: nil}
+	responseJSON, err := response.MarshalJSON()
+
+	if err != nil {
+		log.Println(err)
+		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
+		ctx.SetContentType("text/json")
+		return
+	}
+
+	ctx.SetContentType("text/json")
+	ctx.Write(responseJSON)
+}
+
+func upload(ctx *fasthttp.RequestCtx) (responseURLs []string) {
 	user, err := user.GetLoggedInUser(ctx)
 
 	if err != nil {
@@ -115,9 +138,6 @@ func API(ctx *fasthttp.RequestCtx) {
 		uploadError(ctx, "File malformed or unspecified", fasthttp.StatusBadRequest)
 		return
 	}
-
-	var responseURL string    // Single URL for legacy clients
-	var responseURLs []string // URL for each of the uploaded files
 
 	// Go through all of the uploaded files
 	for _, file := range files {
@@ -186,7 +206,6 @@ func API(ctx *fasthttp.RequestCtx) {
 		}
 
 		responseURLs = append(responseURLs, fullFilename)
-		responseURL = fullFilename
 
 		// Spawn off a worker to scan with clamav and create a thumbnail
 		go func() {
@@ -235,18 +254,7 @@ func API(ctx *fasthttp.RequestCtx) {
 		}()
 	}
 
-	response := Response{URL: responseURL, URLs: responseURLs, Errors: nil}
-	responseJSON, err := response.MarshalJSON()
-
-	if err != nil {
-		log.Println(err)
-		ctx.Error("{errors:[\"Failed to create JSON response. Contact an admin\"]}", fasthttp.StatusInternalServerError)
-		ctx.SetContentType("text/json")
-		return
-	}
-
-	ctx.SetContentType("text/json")
-	ctx.Write(responseJSON)
+	return responseURLs
 }
 
 // DeleteAPI handles the API used to delete uploads

@@ -44,3 +44,15 @@ func PageNoJS(ctx *fasthttp.RequestCtx) {
 	ctx.Write(tpl.Bytes())
 	ctx.SetContentType("text/html")
 }
+
+func APINoJS(ctx *fasthttp.RequestCtx) {
+	responseURLs := upload(ctx)
+	responseURL := ""
+	if len(responseURLs) > 0 {
+		responseURL = responseURLs[0]
+	} else {
+		return
+	}
+
+	ctx.Redirect("/"+responseURL, fasthttp.StatusFound)
+}

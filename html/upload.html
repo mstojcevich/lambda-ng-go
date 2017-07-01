@@ -14,17 +14,19 @@
     {{ template "TopBar" . }}
 
     <main class="content">
-        <noscript>
-            <p>
-                Looks like you have JavaScript disabled or NoScript blocking the upload script. You need JavaScript enabled to use much of
-                Lambda, including to upload files. We respect your privacy and will not use JavaScript to track you.
-            </p>
-        </noscript>
+        {{ if not .NoJS }}
+            <noscript>
+                <p>
+                    Looks like you have JavaScript disabled or NoScript blocking the upload script. You need JavaScript enabled to use much of
+                    Lambda, including to upload files. We respect your privacy and will not use JavaScript to track you.
+                </p>
+            </noscript>
+        {{ end }}
 
         <h1 class="upload-label">Upload</h1>
         
         {{ if .NoJS }}
-            <form action="/api/upload" method="POST" enctype="multipart/form-data">
+            <form action="/nojs/api/upload" method="POST" enctype="multipart/form-data">
                 <input type="file" id="chooseFile" name="file" id="file" accept="{{ .AllowedExtensions }}">
                 <input type="submit">
             </form>

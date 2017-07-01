@@ -21,7 +21,9 @@ func main() {
 
 	// User
 	router.GET("/login", user.LoginPage)
+	router.GET("/nojs/login", user.LoginPageNoJS)
 	router.POST("/api/user/login", user.LoginAPI)
+	router.POST("/nojs/api/user/login", user.LoginAPINoJS)
 	router.GET("/register", user.RegisterPage)
 	router.POST("/api/user/new", user.RegisterAPI)
 	router.PUT("/api/user/new", user.RegisterAPI)

@@ -19,14 +19,20 @@
     </header>
     <main>
         <div class="form-wrapper">
-            <noscript>
-                <p>
-                    Looks like you have JavaScript disabled or NoScript blocking the login script. You need JavaScript enabled to use much of
-                    Lambda, including to login. We respect your privacy and will not use JavaScript to track you.
-                </p>
-            </noscript>
+            {{ if not .NoJS }}
+                <noscript>
+                    <p>
+                        Looks like you have JavaScript disabled or NoScript blocking the login script. You need JavaScript enabled to use much of
+                        Lambda, including to login. We respect your privacy and will not use JavaScript to track you.
+                    </p>
+                </noscript>
+            {{ end }}
             <div id="errorArea"></div>
-            <form action="/api/user/login" method="POST" id="loginForm" onsubmit="return login(this);">
+            {{ if .NoJS }}
+                <form action="/nojs/api/user/login" method="POST" id="loginForm">
+            {{ else }}
+                <form action="/api/user/login" method="POST" id="loginForm" onsubmit="return login(this);">
+            {{ end}}
                 <input type="text" name="username" placeholder="Username">
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" value="Sign In">
@@ -34,8 +40,11 @@
         </div>
         <div class="center-text"><a href="/register">Create an account</a></div>
     </main>
-    <script src="/static/js/all.js" defer></script>
-    <script src="/static/js/login.js" defer></script>
+
+    {{ if not .NoJS }}
+        <script src="/static/js/all.js" defer></script>
+        <script src="/static/js/login.js" defer></script>
+    {{ end }}
 </body>
 
 </html>

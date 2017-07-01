@@ -18,24 +18,27 @@ import (
 var numUploadsStmt, _ = database.DB.Prepare(`SELECT count(id) FROM files WHERE owner=$1`)
 var getUploadsStmt, _ = database.DB.Prepare(`SELECT id,name,local_name,extension,has_thumbnail FROM files WHERE owner=$1 ORDER BY id DESC LIMIT $2 OFFSET $3`)
 
+var pastUploadTemplate *template.Template
+
 func init() {
 	createPastUploadsTemplate()
 }
 
 func createPastUploadsTemplate() {
 	// Create the template
-	t := template.New("past_uploads.html")
+	pastUploadTemplate = template.New("past_uploads.html")
 
-	t.Funcs(puFuncMap)
+	pastUploadTemplate.Funcs(puFuncMap)
 
-	t, err := t.ParseFiles("html/past_uploads.html", "html/partials/shared_head.html", "html/partials/topbar.html")
+	var err error
+	_, err = pastUploadTemplate.ParseFiles("html/past_uploads.html", "html/partials/shared_head.html", "html/partials/topbar.html")
 	if err != nil {
 		panic(err)
 	}
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = pastUploadTemplate.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

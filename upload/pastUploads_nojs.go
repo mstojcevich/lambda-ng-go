@@ -28,16 +28,6 @@ var puFuncMap = template.FuncMap{
 // PastUploadsPage handles viewing the past uploads HTML page
 // It is accessable at /upload via GET
 func PastUploadsPageNoJS(ctx *fasthttp.RequestCtx) {
-	t := template.New("past_uploads.html")
-
-	t.Funcs(puFuncMap)
-
-	// Create the template
-	t, err := t.ParseFiles("html/past_uploads.html", "html/partials/shared_head.html", "html/partials/topbar.html")
-	if err != nil {
-		panic(err)
-	}
-
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil { // User isn't logged in, bring them to the login page
 		ctx.Redirect("/nojs/login", fasthttp.StatusTemporaryRedirect)
@@ -95,7 +85,7 @@ func PastUploadsPageNoJS(ctx *fasthttp.RequestCtx) {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplContext)
+	err = pastUploadTemplate.Execute(&tpl, tplContext)
 	if err != nil {
 		panic(err)
 	}

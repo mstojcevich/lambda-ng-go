@@ -2,7 +2,6 @@ package user
 
 import (
 	"bytes"
-	"html/template"
 
 	tmpl "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user/session"
@@ -33,12 +32,6 @@ func LoginAPINoJS(ctx *fasthttp.RequestCtx) {
 }
 
 func LoginPageNoJS(ctx *fasthttp.RequestCtx) {
-	// Create the template
-	t, err := template.ParseFiles("html/login.html", "html/partials/shared_head.html")
-	if err != nil {
-		panic(err)
-	}
-
 	// Get the signed in user
 	renderCtx := AuthedTemplateContext{}
 	renderCtx.NoJS = true
@@ -50,7 +43,7 @@ func LoginPageNoJS(ctx *fasthttp.RequestCtx) {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, renderCtx)
+	err = loginTemplate.Execute(&tpl, renderCtx)
 	if err != nil {
 		panic(err)
 	}

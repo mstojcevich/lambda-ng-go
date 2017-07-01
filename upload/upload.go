@@ -36,6 +36,8 @@ var deleteFileStmt, _ = database.DB.Prepare("DELETE FROM files WHERE id=$1")
 var deletePasteStmt, _ = database.DB.Prepare("DELETE FROM pastes WHERE id=$1")
 var deleteThumbnailsStmt, _ = database.DB.Prepare("DELETE FROM thumbnails WHERE parent_name=$1")
 
+var uploadTemplate *template.Template
+
 var thumbnailOptions = bimg.Options{
 	Width:     128,
 	Height:    128,
@@ -73,14 +75,15 @@ func init() {
 
 func createUploadTemplate() {
 	// Create the template
-	t, err := template.ParseFiles("html/upload.html", "html/partials/shared_head.html", "html/partials/topbar.html")
+	var err error
+	uploadTemplate, err = template.ParseFiles("html/upload.html", "html/partials/shared_head.html", "html/partials/topbar.html")
 	if err != nil {
 		panic(err)
 	}
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, uploadTplContext{AllowedExtensions: config.AllowedFiletypesStr, MaxFilesize: config.MaxUploadSize})
+	err = uploadTemplate.Execute(&tpl, uploadTplContext{AllowedExtensions: config.AllowedFiletypesStr, MaxFilesize: config.MaxUploadSize})
 	if err != nil {
 		panic(err)
 	}

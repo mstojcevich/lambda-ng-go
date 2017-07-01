@@ -17,20 +17,23 @@ import (
 var userLoginStmt, _ = database.DB.Preparex(`SELECT password, api_key FROM users WHERE username=$1`)
 var userByKeyStmt, _ = database.DB.Prepare(`SELECT id, username FROM users WHERE api_key=$1`)
 
+var loginTemplate *template.Template
+
 func init() {
 	createLoginTemplate()
 }
 
 func createLoginTemplate() {
 	// Create the template
-	t, err := template.ParseFiles("html/login.html", "html/partials/shared_head.html")
+	var err error
+	loginTemplate, err = template.ParseFiles("html/login.html", "html/partials/shared_head.html")
 	if err != nil {
 		panic(err)
 	}
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = loginTemplate.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

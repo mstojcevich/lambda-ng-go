@@ -10,20 +10,23 @@ import (
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 )
 
+var indexTemplate *template.Template
+
 func init() {
 	createIndexTemplate()
 }
 
 func createIndexTemplate() {
 	// Create the template
-	t, err := template.ParseFiles("html/index.html", "html/partials/shared_head.html", "html/partials/topbar.html")
+	var err error
+	indexTemplate, err = template.ParseFiles("html/index.html", "html/partials/shared_head.html", "html/partials/topbar.html")
 	if err != nil {
 		panic(err)
 	}
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = indexTemplate.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
 	if err != nil {
 		panic(err)
 	}

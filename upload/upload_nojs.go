@@ -27,6 +27,7 @@ func PageNoJS(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil {
 		ctx.Redirect("/nojs/login", fasthttp.StatusTemporaryRedirect)
+		return
 	}
 
 	// Render the template into a byte buffer
@@ -36,6 +37,7 @@ func PageNoJS(ctx *fasthttp.RequestCtx) {
 	tplCtx.MaxFilesize = config.MaxUploadSize
 	tplCtx.NoJS = true
 	tplCtx.Session = user
+	tplCtx.SignedIn = true
 	err = t.Execute(&tpl, tplCtx)
 	if err != nil {
 		panic(err)

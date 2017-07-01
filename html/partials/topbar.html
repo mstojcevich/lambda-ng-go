@@ -27,7 +27,7 @@
                         {{ if .SignedIn }}
                             <li><a href="/nojs/user/manage" class="plaque" id="topbar-account">{{ .Session.Username | html }}</a></li>
                         {{ else }}
-                            <li><a href="/login" class="plaque" id="topbar-account">Not Signed In</a></li>
+                            <li><a href="/nojs/login" class="plaque" id="topbar-account">Not Signed In</a></li>
                         {{ end }}
                     {{ end }}
                 </ul>

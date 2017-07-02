@@ -20,7 +20,7 @@ import (
 
 var captcha = recaptcha.NewInstance(config.RecaptchaSecret)
 
-var checkUserStmt, checkUserErr = database.DB.Prepare(`SELECT exists(SELECT 1 FROM users WHERE username=$1)`)
+var checkUserStmt, checkUserErr = database.DB.Prepare(`SELECT exists(SELECT 1 FROM users WHERE LOWER(username)=LOWER($1))`)
 var createUserStmt, createUserErr = database.DB.Prepare(`INSERT INTO users (username, password, creation_date, api_key, encryption_enabled) VALUES ($1, $2, $3, $4, false)`)
 
 var isAlnum = regexp.MustCompile(`^[A-Za-z0-9]+$`).MatchString

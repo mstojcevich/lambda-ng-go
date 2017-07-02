@@ -14,7 +14,7 @@ import (
 	"github.com/mstojcevich/lambda-ng-go/user/session"
 )
 
-var userLoginStmt, _ = database.DB.Preparex(`SELECT password, api_key FROM users WHERE username=$1`)
+var userLoginStmt, _ = database.DB.Preparex(`SELECT password, api_key FROM users WHERE LOWER(username)=LOWER($1)`)
 var userByKeyStmt, _ = database.DB.Prepare(`SELECT id, username FROM users WHERE api_key=$1`)
 
 var loginTemplate *template.Template

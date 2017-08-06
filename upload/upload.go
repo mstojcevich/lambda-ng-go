@@ -12,8 +12,6 @@ import (
 	"strings"
 	"time"
 
-	bimg "gopkg.in/h2non/bimg.v1"
-
 	"github.com/dchest/uniuri"
 	clamd "github.com/dutchcoders/go-clamd"
 	"github.com/mstojcevich/lambda-ng-go/config"
@@ -37,14 +35,6 @@ var deletePasteStmt, _ = database.DB.Prepare("DELETE FROM pastes WHERE id=$1")
 var deleteThumbnailsStmt, _ = database.DB.Prepare("DELETE FROM thumbnails WHERE parent_name=$1")
 
 var uploadTemplate *template.Template
-
-var thumbnailOptions = bimg.Options{
-	Width:     128,
-	Height:    128,
-	Crop:      true,
-	Quality:   75,
-	Interlace: true,
-}
 
 // Set used to quickly check if an extension is allowed
 var allowedExtensionsSet = map[string]struct{}{}
@@ -89,7 +79,7 @@ func createUploadTemplate() {
 	}
 
 	// Output the template to a file
-	ioutil.WriteFile("html/compiled/upload.html", tpl.Bytes(), 0644)
+	err = ioutil.WriteFile("html/compiled/upload.html", tpl.Bytes(), 0644)
 }
 
 // Page handles viewing the upload HTML page
@@ -232,9 +222,8 @@ func upload(ctx *fasthttp.RequestCtx) (responseURLs []string) {
 				}
 			}
 
-			img := bimg.NewImage(b)
-			thumb, err := img.Process(thumbnailOptions)
-			if err != nil {
+			thumb := createThumb(b)
+			if thumb == nil { // No thumbnail was generated
 				return
 			}
 

@@ -23,7 +23,6 @@ func init() {
 		MaxActive:     0,
 		IdleTimeout:   service.DefaultRedisIdleTimeout,
 		Prefix:        "lmdasessions",
-		MaxAgeSeconds: service.DefaultRedisMaxAgeSeconds,
 	})
 
 	Sessions.UseDatabase(sessionDb)

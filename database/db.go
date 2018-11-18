@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS files (
 	encrypted boolean NOT NULL,
 	local_name varchar,
 	upload_date timestamp,
-	has_thumbnail boolean NOT NULL
+	has_thumbnail boolean NOT NULL,
+	in_b2 boolean NOT NULL DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS pastes (

@@ -44,6 +44,15 @@ var ClamAVScanning bool
 // ClamSock is the path to the ClamAV socket file
 var ClamSock = "/var/lib/clamav/clamd.sock"
 
+// BackblazeBucket is the name of the B2 bucket to use for the B2 integration
+var BackblazeBucket = "lambda"
+
+// BackblazeAccountID is the Backblaze account ID for the B2 integration
+var BackblazeAccountID string
+
+// BackblazeAppKey is the Backblaze application key for the B2 integration
+var BackblazeAppKey string
+
 func init() {
 	s, exists := os.LookupEnv("LMDA_RECAPTCHA_SECRET")
 	if exists {
@@ -96,5 +105,20 @@ func init() {
 	s, exists = os.LookupEnv("LMDA_CLAM_SOCK")
 	if exists {
 		ClamSock = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_BLAZE_ID")
+	if exists {
+		BackblazeAccountID = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_BLAZE_KEY")
+	if exists {
+		BackblazeAppKey = s
+	}
+
+	s, exists = os.LookupEnv("LMDA_BLAZE_BUCKET")
+	if exists {
+		BackblazeBucket = s
 	}
 }

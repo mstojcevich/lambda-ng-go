@@ -11,13 +11,12 @@ import (
 
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
-	"github.com/mstojcevich/lambda-ng-go/upload"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/kothar/go-backblaze.v0"
 )
 
-var b2 *backblaze.B2
-var bucket *backblaze.Bucket
+var B2 *backblaze.B2
+var Bucket *backblaze.Bucket
 
 var pasteExistsStmt, _ = database.DB.Prepare(`SELECT exists(SELECT 1 FROM pastes WHERE name=$1)`)
 
@@ -35,7 +34,7 @@ func init() {
 	create404Template()
 
 	var err error
-	b2, err = backblaze.NewB2(backblaze.Credentials{
+	B2, err = backblaze.NewB2(backblaze.Credentials{
 		AccountID:      config.BackblazeAccountID,
 		ApplicationKey: config.BackblazeAppKey,
 	})
@@ -45,7 +44,7 @@ func init() {
 		panic(err)
 	}
 
-	bucket, err = b2.Bucket(config.BackblazeBucket)
+	Bucket, err = B2.Bucket(config.BackblazeBucket)
 	if err != nil {
 		panic(err)
 	}
@@ -75,6 +74,11 @@ func show404(ctx *fasthttp.RequestCtx) {
 	ctx.SetStatusCode(404)
 }
 
+// viewPastePage renders the paste page HTML
+func viewPastePage(ctx *fasthttp.RequestCtx) {
+	ctx.SendFile("html/compiled/view_paste.html")
+}
+
 // Serve serves an uploaded Lambda file or paste
 func Serve(ctx *fasthttp.RequestCtx) {
 	path := string(ctx.Path())
@@ -92,7 +96,7 @@ func Serve(ctx *fasthttp.RequestCtx) {
 	r.Scan(&pasteExists)
 
 	if pasteExists {
-		upload.ViewPastePage(ctx)
+		viewPastePage(ctx)
 		return
 	}
 
@@ -109,7 +113,7 @@ func Serve(ctx *fasthttp.RequestCtx) {
 	r.Scan(&b2name)
 	if b2name != "" {
 		// Grab from B2 then serve
-		_, readCloser, err := bucket.DownloadFileByName(b2name)
+		_, readCloser, err := Bucket.DownloadFileByName(b2name)
 		if err != nil {
 			fmt.Printf("Error when downloading from B2: %s\n", err)
 			show404(ctx)

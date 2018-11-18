@@ -59,11 +59,6 @@ func createPasteViewTemplate() {
 }
 
 // PastePage renders the paste page HTML
-func ViewPastePage(ctx *fasthttp.RequestCtx) {
-	ctx.SendFile("html/compiled/view_paste.html")
-}
-
-// PastePage renders the paste page HTML
 func PastePage(ctx *fasthttp.RequestCtx) {
 	ctx.SendFile("html/compiled/paste.html")
 }

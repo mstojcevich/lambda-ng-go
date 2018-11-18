@@ -16,6 +16,7 @@ import (
 	clamd "github.com/dutchcoders/go-clamd"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
+	"github.com/mstojcevich/lambda-ng-go/fileserve"
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user"
 
@@ -27,7 +28,7 @@ var addFileStmt, _ = database.DB.Prepare(`INSERT INTO files (name, owner, extens
 var addThumbnailStmt, _ = database.DB.Prepare(`INSERT INTO thumbnails (parent_name, width, height, url) VALUES ($1, 128, 128, $2)`)
 var markThumbnailStmt, _ = database.DB.Prepare(`UPDATE files SET has_thumbnail=true WHERE id=$1`)
 
-var getFileForDeleteStmt, _ = database.DB.Prepare(`SELECT id,owner,name,extension,has_thumbnail FROM files WHERE name=$1`)
+var getFileForDeleteStmt, _ = database.DB.Prepare(`SELECT id,owner,name,extension,has_thumbnail,in_b2 FROM files WHERE name=$1`)
 var getPasteForDeleteStmt, _ = database.DB.Prepare(`SELECT id,owner FROM pastes WHERE name=$1`)
 
 var deleteFileStmt, _ = database.DB.Prepare("DELETE FROM files WHERE id=$1")
@@ -269,7 +270,8 @@ func DeleteAPI(ctx *fasthttp.RequestCtx) {
 	var uploadID, uploadOwner int
 	var uploadName, uploadExtension string
 	var uploadHasThumbnail bool
-	err = r.Scan(&uploadID, &uploadOwner, &uploadName, &uploadExtension, &uploadHasThumbnail)
+	var uploadInB2 bool
+	err = r.Scan(&uploadID, &uploadOwner, &uploadName, &uploadExtension, &uploadHasThumbnail, &uploadInB2)
 
 	if err != nil { // Upload probably didn't exist, look for paste
 		r = getPasteForDeleteStmt.QueryRow(filename)
@@ -333,9 +335,28 @@ func DeleteAPI(ctx *fasthttp.RequestCtx) {
 				// Don't error for the user, still successfully removed from DB and probably wasn't in filesystem
 			}
 		}
-	}
 
-	fmt.Println(user.ID)
+		// Let's also delete from backblaze if it's there
+		if uploadInB2 {
+			// We disable file versions for the bucket, so there can only be one version, but check up to 100 anyways
+			b2versions, err := fileserve.Bucket.ListFileVersions(uploadName+"."+uploadExtension, "", 100)
+			if err != nil {
+				log.Println("Failed to list versions from B2, probably was never backed up", filename)
+				log.Println(err)
+			}
+			for _, version := range b2versions.Files {
+				if version.Name != uploadName+"."+uploadExtension {
+					// sanity
+					break
+				}
+				_, err = fileserve.Bucket.DeleteFileVersion(version.Name, version.ID)
+				if err != nil {
+					log.Println("Failed to delete file from B2", filename)
+					log.Println(err)
+				}
+			}
+		}
+	}
 }
 
 // genFilename generates a random filename that isn't in use for a file or paste

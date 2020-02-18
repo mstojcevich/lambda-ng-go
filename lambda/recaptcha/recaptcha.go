@@ -52,7 +52,10 @@ func (instance Instance) check(remoteIP, response string) (r recaptchaResponse, 
 
 	// Make the request
 	resp := fasthttp.AcquireResponse()
-	client := &fasthttp.Client{}
+	client := &fasthttp.Client{
+		ReadTimeout:        1 * time.Minute,
+		WriteTimeout:       1 * time.Minute,
+	}
 	err := client.Do(req, resp)
 
 	if err != nil {

@@ -65,14 +65,21 @@ func RegisterAPI(ctx *fasthttp.RequestCtx) {
 	captchaResponse := string(ctx.FormValue("g-recaptcha-response"))
 	remoteIP := ctx.RemoteIP()
 
-	captchaValid, err := captcha.Check(remoteIP.String(), captchaResponse)
+	var captchaValid bool
+	var err error
+	if len(config.RecaptchaSiteKey) > 0 {
+		captchaValid, err = captcha.Check(remoteIP.String(), captchaResponse)
 
-	if err != nil {
-		// TODO proper logging
-		log.Println(err)
+		if err != nil {
+			// TODO proper logging
+			log.Println(err)
 
-		registerError(ctx, "Failed to check captcha", fasthttp.StatusInternalServerError)
-		return
+			registerError(ctx, "Failed to check captcha", fasthttp.StatusInternalServerError)
+			return
+		}
+	} else {
+		captchaValid = true
+		log.Println("Skipping ReCAPTCHA verification because site key is missing")
 	}
 
 	if !isAlnum(username) {

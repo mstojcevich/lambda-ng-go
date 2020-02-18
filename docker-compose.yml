@@ -1,0 +1,60 @@
+# docker-compose file for development
+
+# TODO cap_drop capabilities that aren't required
+version: "3.7"
+services:
+    lambda:
+        image: lambda:latest
+        build: lambda/
+        volumes:
+            - ./run/lambda/files:/files
+        depends_on:
+            - clamav
+            - db
+            - redis
+        environment:
+            LMDA_REDIS_ADDR: "redis:6379"
+            LMDA_REDIS_PASS: super-secret-dev-redis-password
+            LMDA_DB_CONNSTR: host=db port=5432 user=lambda_dev password=super-secret-dev-password dbname=lambda_dev sslmode=disable
+            LMDA_RECAPTCHA_SECRET: ""
+            LMDA_RECAPTCHA_SITE_KEY: ""
+            LMDA_ALLOWED_FILETYPES: ".png,.jpg,.jpeg,.pdf,.zip,.7z,.mp3,.opus,.mp4,.webm,.webp,.gif,.ogg"
+            LMDA_MAX_UPLOAD_SIZE: "15"
+            LMDA_UPLOAD_DIR: "/files/"
+            LMDA_CLAMAV: "true"
+            LMDA_CLAM_SOCK: "tcp://clamav:3310"
+            LMDA_BLAZE_ID: ""
+            LMDA_BLAZE_KEY: ""
+            LMDA_BLAZE_BUCKET: ""
+    clamav:  # Provides a clamd daemon for lambda to connect to for virus scanning
+        image: lambda_clamav:latest
+        build:
+            context: ./
+            dockerfile: clamav.Dockerfile
+    db:
+        image: postgres:12.2-alpine   # TODO build our own postgres image, since this one contains build deps in it...
+                                      # It's also not super clear that it doesn't run as root in the container by default.
+        user: postgres
+        environment:
+            POSTGRES_USER: lambda_dev
+            POSTGRES_PASSWORD: super-secret-dev-password
+        volumes:
+            - ./run/postgres/data:/var/lib/postgresql/data
+    proxy:
+        image: nginx:1.16-alpine
+        user: nginx  # don't run nginx as root. It drops its own privs, but still.
+                     # The Dockerfile just downloads a binary off of the internet and trusts it. I don't.
+        volumes:
+            - ./nginx-dev:/etc/nginx:ro
+        depends_on:
+            - lambda
+        ports:
+            - "80:8080"
+            - "443:8443"
+    redis:
+        image: redis:5.0-alpine
+        user: redis
+        volumes:
+            - ./redis-dev/redis.conf:/redis.conf:ro
+            - ./run/redis/data:/data
+        command: ["redis-server", "/redis.conf"]

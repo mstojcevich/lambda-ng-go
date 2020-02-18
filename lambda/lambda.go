@@ -74,7 +74,7 @@ func main() {
 		MaxRequestsPerConn: 512,
 	}
 
-	log.Fatal(s.ListenAndServe(":8080"))
+	log.Fatal(s.ListenAndServe(config.ListenStr))
 }
 
 func panicHandler(ctx *fasthttp.RequestCtx, err interface{}) {

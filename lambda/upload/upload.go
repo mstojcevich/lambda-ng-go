@@ -192,6 +192,7 @@ func upload(ctx *fasthttp.RequestCtx) (responseURLs []string) {
 			return
 		}
 
+		// TODO buffered IO instead of loading the whole file into memory then writing to disk
 		err = ioutil.WriteFile(path, b, 0655)
 		if err != nil {
 			log.Println(err)

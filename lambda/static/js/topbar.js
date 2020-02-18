@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     getSessionInfo(function (sessionInfo) {
         // Successful login, switch the login button to be a user details button
 
-        console.log(sessionInfo);
-
         let topbarAccount = document.getElementById("topbar-account");
         topbarAccount.innerText = sessionInfo.username;
 

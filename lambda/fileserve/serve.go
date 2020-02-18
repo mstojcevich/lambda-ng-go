@@ -33,20 +33,22 @@ var b2NameStmt, _ = database.DB.Prepare(`
 func init() {
 	create404Template()
 
-	var err error
-	B2, err = backblaze.NewB2(backblaze.Credentials{
-		AccountID:      config.BackblazeAccountID,
-		ApplicationKey: config.BackblazeAppKey,
-	})
-	if err != nil {
-		fmt.Printf("Backblaze account ID: %s\n", config.BackblazeAccountID)
-		fmt.Printf("Backblaze app key: %s\n", config.BackblazeAppKey)
-		panic(err)
-	}
+	if len(config.BackblazeAccountID) > 0 {
+		var err error
+		B2, err = backblaze.NewB2(backblaze.Credentials{
+			AccountID:      config.BackblazeAccountID,
+			ApplicationKey: config.BackblazeAppKey,
+		})
+		if err != nil {
+			fmt.Printf("Backblaze account ID: %s\n", config.BackblazeAccountID)
+			fmt.Printf("Backblaze app key: %s\n", config.BackblazeAppKey)
+			panic(err)
+		}
 
-	Bucket, err = B2.Bucket(config.BackblazeBucket)
-	if err != nil {
-		panic(err)
+		Bucket, err = B2.Bucket(config.BackblazeBucket)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 

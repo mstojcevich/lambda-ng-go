@@ -53,13 +53,13 @@ var BackblazeAccountID = ""
 // BackblazeAppKey is the Backblaze application key for the B2 integration
 var BackblazeAppKey = ""
 
-// Address used to connected to redis
+// RedisAddr is the address string used to connected to redis
 var RedisAddr = "localhost:6379"
 
-// Password for redis authentication. Empty string = no authentication.
+// RedisPassword is teh password for redis authentication. Empty string = no authentication.
 var RedisPassword = ""
 
-// String to specify the interface and port to listen on
+// ListenStr specifies the interface and port to listen on
 var ListenStr = ":8080"
 
 func init() {

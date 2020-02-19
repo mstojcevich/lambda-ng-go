@@ -2,6 +2,7 @@ package index
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/mstojcevich/lambda-ng-go/user"
 	"github.com/valyala/fasthttp"
@@ -12,7 +13,10 @@ func PageNoJS(ctx *fasthttp.RequestCtx) {
 	renderCtx := user.AuthedTemplateContext{}
 	renderCtx.NoJS = true
 	user, err := user.GetLoggedInUser(ctx)
-	if err == nil {
+	if err != nil {
+		fmt.Println(err)
+	}
+	if err == nil && user != nil {
 		renderCtx.SignedIn = true
 		renderCtx.Session = user
 	}

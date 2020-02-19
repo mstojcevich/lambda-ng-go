@@ -2,6 +2,7 @@ package upload
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/user"
@@ -19,6 +20,9 @@ type uploadTplContextNoJS struct {
 func PageNoJS(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		ctx.Redirect("/nojs/login", fasthttp.StatusTemporaryRedirect)
 		return
 	}

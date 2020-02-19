@@ -2,6 +2,7 @@ package upload
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -88,6 +89,9 @@ func GetPasteAPI(ctx *fasthttp.RequestCtx) {
 func PutPasteAPI(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		pasteError(ctx, "You must be logged in to paste", fasthttp.StatusUnauthorized)
 		return
 	}

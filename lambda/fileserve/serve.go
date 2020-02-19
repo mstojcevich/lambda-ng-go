@@ -78,6 +78,7 @@ func show404(ctx *fasthttp.RequestCtx) {
 
 // viewPastePage renders the paste page HTML
 func viewPastePage(ctx *fasthttp.RequestCtx) {
+	ctx.SetContentType("text/html")
 	ctx.SendFile("html/compiled/view_paste.html")
 }
 

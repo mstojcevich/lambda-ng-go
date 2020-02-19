@@ -4,7 +4,7 @@ FROM golang:1.13-alpine AS build
 ENV LANG en_US.utf8
 
 RUN apk --no-cache add \
-    dep git \
+    git \
     gcc libc-dev pkgconfig \
     vips vips-dev
 
@@ -15,7 +15,6 @@ USER lambda_build
 COPY --chown=lambda_build:lambda_build . /go/src/github.com/mstojcevich/lambda-ng-go
 WORKDIR /go/src/github.com/mstojcevich/lambda-ng-go
 
-RUN dep ensure
 # RUN go build -ldflags "-linkmode external -extldflags -static" lambda.go
 RUN go build lambda.go
 

@@ -2,6 +2,7 @@ package user
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 
 	"github.com/valyala/fasthttp"
@@ -22,7 +23,10 @@ func ManagePageNoJS(ctx *fasthttp.RequestCtx) {
 	renderCtx := AuthedTemplateContext{}
 	renderCtx.NoJS = true
 	user, err := GetLoggedInUser(ctx)
-	if err == nil {
+	if err != nil {
+		fmt.Println(err)
+	}
+	if user != nil && err == nil {
 		renderCtx.SignedIn = true
 		renderCtx.Session = user
 	}

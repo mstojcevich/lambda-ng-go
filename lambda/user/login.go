@@ -2,6 +2,7 @@ package user
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 
@@ -72,8 +73,13 @@ func LoginAPI(ctx *fasthttp.RequestCtx) {
 	}
 
 	// Set the API key on the user's session
-	sess := session.Sessions.StartFasthttp(ctx)
-	sess.Set("api_key", user.APIKey)
+	newSession := session.NewSession(user.APIKey)
+	err = newSession.SaveToContext(ctx)
+	if err != nil {
+		log.Println(err)
+		loginError(ctx, "Failed to log in", fasthttp.StatusInternalServerError)
+		return
+	}
 
 	result := LoginResult{Errors: nil, APIKey: user.APIKey, Success: true}
 	resultJSON, err := result.MarshalJSON()
@@ -93,6 +99,9 @@ func LoginAPI(ctx *fasthttp.RequestCtx) {
 func GetSessionAPI(ctx *fasthttp.RequestCtx) {
 	user, err := GetLoggedInUser(ctx)
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		sessionGetError(ctx, "User not logged in or no API key sent", fasthttp.StatusUnauthorized)
 		return
 	}
@@ -111,10 +120,17 @@ func GetSessionAPI(ctx *fasthttp.RequestCtx) {
 }
 
 // GetLoggedInUser gets the current logged in user by checking the API key both in POST and in the session
-func GetLoggedInUser(ctx *fasthttp.RequestCtx) (User, error) {
+func GetLoggedInUser(ctx *fasthttp.RequestCtx) (*User, error) {
 	// Try to get API key first via session then via POST
-	sess := session.Sessions.StartFasthttp(ctx)
-	apiKey := sess.GetString("api_key")
+	sess, err := session.LoadFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if sess == nil {
+		return nil, nil
+	}
+
+	apiKey := sess.APIKey
 	if apiKey == "" {
 		apiKey = string(ctx.FormValue("api_key"))
 	}
@@ -122,14 +138,17 @@ func GetLoggedInUser(ctx *fasthttp.RequestCtx) (User, error) {
 	var user User
 	user.APIKey = apiKey
 	row := userByKeyStmt.QueryRow(apiKey)
-	err := row.Scan(&user.ID, &user.Username)
+	if row == nil {
+		return nil, nil
+	}
 
-	return user, err
+	err = row.Scan(&user.ID, &user.Username)
+	return &user, err
 }
 
 func LogoutAPI(ctx *fasthttp.RequestCtx) {
 	// Logout the user by destroying their session
-	session.Sessions.DestroyFasthttp(ctx)
+	session.RemoveSession(ctx)
 }
 
 // loginError writes out JSON for a failed login

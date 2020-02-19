@@ -141,8 +141,8 @@ func RegisterAPI(ctx *fasthttp.RequestCtx) {
 	}
 
 	// Sign the user in
-	sess := session.Sessions.StartFasthttp(ctx)
-	sess.Set("api_key", apiKey)
+	sess := session.NewSession(apiKey)
+	sess.SaveToContext(ctx)
 
 	// Return the result as JSON
 	result := RegisterResult{Errors: nil, APIKey: apiKey, Success: true}

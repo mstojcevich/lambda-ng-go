@@ -57,6 +57,9 @@ func PastUploadsPage(ctx *fasthttp.RequestCtx) {
 func PastUploadsAPI(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		pastUploadError(ctx, "You must be signed in to see past uploads", fasthttp.StatusUnauthorized)
 		return
 	}

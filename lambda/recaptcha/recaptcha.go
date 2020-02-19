@@ -34,6 +34,7 @@ func NewInstance(secretKey string) Instance {
 // check validates a client's challenge-response response with the recatcha server
 func (instance Instance) check(remoteIP, response string) (r recaptchaResponse, e error) {
 	req := fasthttp.AcquireRequest()
+	defer fasthttp.ReleaseRequest(req)
 	req.SetRequestURI(verifyURL)
 
 	req.Header.SetMethod("POST")
@@ -52,9 +53,10 @@ func (instance Instance) check(remoteIP, response string) (r recaptchaResponse, 
 
 	// Make the request
 	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseResponse(resp)
 	client := &fasthttp.Client{
-		ReadTimeout:        1 * time.Minute,
-		WriteTimeout:       1 * time.Minute,
+		ReadTimeout:  1 * time.Minute,
+		WriteTimeout: 1 * time.Minute,
 	}
 	err := client.Do(req, resp)
 

@@ -117,8 +117,10 @@ func API(ctx *fasthttp.RequestCtx) {
 
 func upload(ctx *fasthttp.RequestCtx) (responseURLs []string) {
 	user, err := user.GetLoggedInUser(ctx)
-
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		uploadError(ctx, "You must be logged in to upload", fasthttp.StatusUnauthorized)
 		return
 	}
@@ -261,8 +263,10 @@ func DeleteAPI(ctx *fasthttp.RequestCtx) {
 	}
 
 	user, err := user.GetLoggedInUser(ctx)
-
 	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		deleteError(ctx, "You must be signed in to delete an upload", fasthttp.StatusUnauthorized)
 		return
 	}

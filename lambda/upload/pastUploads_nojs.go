@@ -2,6 +2,7 @@ package upload
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"math"
@@ -29,7 +30,10 @@ var puFuncMap = template.FuncMap{
 // It is accessable at /upload via GET
 func PastUploadsPageNoJS(ctx *fasthttp.RequestCtx) {
 	user, err := user.GetLoggedInUser(ctx)
-	if err != nil { // User isn't logged in, bring them to the login page
+	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil { // User isn't logged in, bring them to the login page
 		ctx.Redirect("/nojs/login", fasthttp.StatusTemporaryRedirect)
 		return
 	}

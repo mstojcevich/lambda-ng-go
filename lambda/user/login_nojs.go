@@ -2,6 +2,7 @@ package user
 
 import (
 	"bytes"
+	"fmt"
 
 	tmpl "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user/session"
@@ -13,11 +14,11 @@ type AuthedTemplateContext struct {
 	tmpl.CommonTemplateCtx
 
 	SignedIn bool
-	Session  User
+	Session  *User
 }
 
 func LogoutNoJS(ctx *fasthttp.RequestCtx) {
-	session.Sessions.DestroyFasthttp(ctx)
+	session.RemoveSession(ctx)
 	ctx.Redirect("/nojs/", fasthttp.StatusFound)
 }
 
@@ -36,7 +37,10 @@ func LoginPageNoJS(ctx *fasthttp.RequestCtx) {
 	renderCtx := AuthedTemplateContext{}
 	renderCtx.NoJS = true
 	user, err := GetLoggedInUser(ctx)
-	if err == nil {
+	if err != nil {
+		fmt.Println(err)
+	}
+	if user == nil || err != nil {
 		renderCtx.SignedIn = true
 		renderCtx.Session = user
 	}

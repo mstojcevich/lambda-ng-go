@@ -127,13 +127,16 @@ func GetLoggedInUser(ctx *fasthttp.RequestCtx) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
-	if sess == nil {
-		return nil, nil
-	}
 
-	apiKey := sess.APIKey
+	apiKey := ""
+	if sess != nil {
+		apiKey = sess.APIKey
+	}
 	if apiKey == "" {
 		apiKey = string(ctx.FormValue("api_key"))
+	}
+	if apiKey == "" {
+		return nil, nil
 	}
 
 	var user User

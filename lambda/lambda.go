@@ -58,7 +58,7 @@ func main() {
 		ctx.SendFile("static/img/favicon.ico")
 	})
 
-	router.ServeFiles("/static/*filepath", "static")
+	router.ServeFiles("/static/*filepath", "static/")
 
 	router.NotFound = fileserve.Serve
 

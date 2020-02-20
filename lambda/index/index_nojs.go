@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/user"
 	"github.com/valyala/fasthttp"
 )
@@ -11,6 +12,7 @@ import (
 func PageNoJS(ctx *fasthttp.RequestCtx) {
 	// Get the signed in user
 	renderCtx := user.AuthedTemplateContext{}
+	renderCtx.AssetMap = assetmap.Assets.Map
 	renderCtx.NoJS = true
 	user, err := user.GetLoggedInUser(ctx)
 	if err != nil {

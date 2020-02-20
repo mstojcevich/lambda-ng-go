@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/dchest/uniuri"
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/recaptcha"
@@ -44,7 +45,10 @@ func createRegisterTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, registerTplContext{RecaptchaSiteKey: config.RecaptchaSiteKey})
+	err = t.Execute(&tpl, registerTplContext{
+		CommonTemplateCtx: tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map},
+		RecaptchaSiteKey:  config.RecaptchaSiteKey,
+	})
 	if err != nil {
 		panic(err)
 	}

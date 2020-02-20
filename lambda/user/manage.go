@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io/ioutil"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/valyala/fasthttp"
 )
@@ -22,7 +23,7 @@ func createUserManageTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map, NoJS: false})
 	if err != nil {
 		panic(err)
 	}

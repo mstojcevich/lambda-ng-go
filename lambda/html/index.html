@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>λ | Simple File Hosting</title>
 
-    <link rel="stylesheet" href="/static/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/static/hashed/css/{{ index .AssetMap "main.css" }}" type="text/css">
     
     {{ template "SharedHead" . }}
 </head>
@@ -28,8 +28,8 @@
     </footer>
 
     {{ if not .NoJS }}
-        <script type="text/javascript" src="/static/js/all.js" defer></script>
-        <script type="text/javascript" src="/static/js/topbar.js" defer></script>
+        <script src="/static/hashed/js/{{ index .AssetMap "all.js" }}" defer></script>
+        <script src="/static/hashed/js/{{ index .AssetMap "topbar.js" }}" defer></script>
     {{ end }}
 </body>
 

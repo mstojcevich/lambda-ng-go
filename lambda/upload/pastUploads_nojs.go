@@ -8,6 +8,7 @@ import (
 	"math"
 	"strconv"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/user"
 	"github.com/valyala/fasthttp"
 )
@@ -45,10 +46,12 @@ func PastUploadsPageNoJS(ctx *fasthttp.RequestCtx) {
 	}
 
 	var tplContext PastUploadsNoJSContext
+	tplContext.AssetMap = assetmap.Assets.Map
 	tplContext.NoJS = true
 	tplContext.PageNum = pageNum
 	tplContext.SignedIn = true
 	tplContext.Session = user
+	tplContext.AssetMap = assetmap.Assets.Map
 
 	// Get the number of uploads by the user to calculate the total number of pages
 	var numUploads int

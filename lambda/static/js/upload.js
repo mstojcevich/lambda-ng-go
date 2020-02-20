@@ -54,10 +54,11 @@ document.addEventListener("DOMContentLoaded", function() {
  */
 function checkAndUpload(file) {
     let errorList = document.getElementById("errorList");
+    let maxFilesize = parseInt(document.getElementById("max-upload-filesize").textContent);
 
     getSessionInfo(function() { // User is logged in
-        if(file.size > maxFilesize) {
-            addError(errorList, "Max filesize is " + (maxFilesize / (1024 * 1024)) + " MB");
+        if(file.size > (maxFilesize * 1024 * 1024)) {
+            addError(errorList, "Max filesize is " + maxFilesize + " MB");
             return
         }
 

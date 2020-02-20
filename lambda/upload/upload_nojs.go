@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/user"
 	"github.com/valyala/fasthttp"
@@ -11,8 +12,9 @@ import (
 
 type uploadTplContextNoJS struct {
 	user.AuthedTemplateContext
-	uploadTplContext
-	NoJS bool
+	AllowedExtensions string
+	MaxFilesize       int
+	NoJS              bool
 }
 
 // Page handles viewing the upload HTML page
@@ -30,6 +32,7 @@ func PageNoJS(ctx *fasthttp.RequestCtx) {
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
 	tplCtx := uploadTplContextNoJS{}
+	tplCtx.AssetMap = assetmap.Assets.Map
 	tplCtx.AllowedExtensions = config.AllowedFiletypesStr
 	tplCtx.MaxFilesize = config.MaxUploadSize
 	tplCtx.NoJS = true

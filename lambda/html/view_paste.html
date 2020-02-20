@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>λ | Paste</title>
-    <link rel="stylesheet" href="/static/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/paste.css" type="text/css">
+    <link rel="stylesheet" href="/static/hashed/css/{{ index .AssetMap "main.css" }}" type="text/css">
+    <link rel="stylesheet" href="/static/hashed/css/{{ index .AssetMap "paste.css" }}" type="text/css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/railscasts.min.css">
 
     {{ template "SharedHead" . }}
@@ -20,10 +20,10 @@
         </pre>
     </main>
 
-    <script src="/static/js/all.js" defer></script>
+    <script src="/static/hashed/js/{{ index .AssetMap "all.js" }}" defer></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.6/sjcl.min.js" defer></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script src="/static/js/view_paste.js" defer></script>
+    <script src="/static/hashed/js/{{ index .AssetMap "view_paste.js" }}" defer></script>
 </body>
 
 </html>

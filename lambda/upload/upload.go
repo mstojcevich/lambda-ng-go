@@ -14,6 +14,7 @@ import (
 
 	"github.com/dchest/uniuri"
 	clamd "github.com/dutchcoders/go-clamd"
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/config"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/mstojcevich/lambda-ng-go/fileserve"
@@ -74,7 +75,10 @@ func createUploadTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = uploadTemplate.Execute(&tpl, uploadTplContext{AllowedExtensions: config.AllowedFiletypesStr, MaxFilesize: config.MaxUploadSize})
+	err = uploadTemplate.Execute(&tpl, uploadTplContext{
+		CommonTemplateCtx: tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map},
+		AllowedExtensions: config.AllowedFiletypesStr, MaxFilesize: config.MaxUploadSize,
+	})
 	if err != nil {
 		panic(err)
 	}

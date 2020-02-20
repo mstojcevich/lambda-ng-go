@@ -5,7 +5,7 @@ body {
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    background: url("../img/bgtile.png") repeat;
+    background: url("/static/img/bgtile.png") repeat;
     color: #333;
     font-family: "Helvetica Neue","Arial",sans-serif;
 }

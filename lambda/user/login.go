@@ -10,6 +10,7 @@ import (
 
 	"io/ioutil"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user/session"
@@ -34,7 +35,7 @@ func createLoginTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = loginTemplate.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = loginTemplate.Execute(&tpl, tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map, NoJS: false})
 	if err != nil {
 		panic(err)
 	}

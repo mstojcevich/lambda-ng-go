@@ -9,10 +9,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mstojcevich/lambda-ng-go/config"
-	"github.com/mstojcevich/lambda-ng-go/database"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/kothar/go-backblaze.v0"
+
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
+	"github.com/mstojcevich/lambda-ng-go/config"
+	"github.com/mstojcevich/lambda-ng-go/database"
+	tplt "github.com/mstojcevich/lambda-ng-go/template"
 )
 
 var B2 *backblaze.B2
@@ -61,7 +64,7 @@ func create404Template() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, nil)
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{assetmap.Assets.Map, false})
 	if err != nil {
 		panic(err)
 	}

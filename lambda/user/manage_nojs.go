@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/valyala/fasthttp"
 )
 
@@ -21,6 +22,7 @@ func ManagePageNoJS(ctx *fasthttp.RequestCtx) {
 
 	// Get the signed in user
 	renderCtx := AuthedTemplateContext{}
+	renderCtx.AssetMap = assetmap.Assets.Map
 	renderCtx.NoJS = true
 	user, err := GetLoggedInUser(ctx)
 	if err != nil {

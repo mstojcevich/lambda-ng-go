@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	"github.com/mstojcevich/lambda-ng-go/database"
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 	"github.com/mstojcevich/lambda-ng-go/user"
@@ -32,7 +33,7 @@ func createPasteTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map, NoJS: false})
 	if err != nil {
 		panic(err)
 	}
@@ -50,7 +51,7 @@ func createPasteViewTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = t.Execute(&tpl, nil)
+	err = t.Execute(&tpl, tplt.CommonTemplateCtx{assetmap.Assets.Map, false})
 	if err != nil {
 		panic(err)
 	}

@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>λ | Past Uploads</title>
-    <link rel="stylesheet" href="/static/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/past_uploads.css" type="text/css">
-    
+    <link rel="stylesheet" href="/static/hashed/css/{{ index .AssetMap "main.css" }}" type="text/css">
+    <link rel="stylesheet" href="/static/hashed/css/{{ index .AssetMap "past_uploads.css" }}" type="text/css">
+
     {{ template "SharedHead" . }}
 </head>
 
@@ -63,9 +63,9 @@
     </main>
 
     {{ if not .NoJS }}
-        <script src="/static/js/all.js" defer></script>
-        <script src="/static/js/topbar.js" defer></script>
-        <script src="/static/js/past_uploads.js" defer></script>
+        <script src="/static/hashed/js/{{ index .AssetMap "all.js" }}" defer></script>
+        <script src="/static/hashed/js/{{ index .AssetMap "topbar.js" }}" defer></script>
+        <script src="/static/hashed/js/{{ index .AssetMap "past_uploads.js" }}" defer></script>
     {{ end }}
 </body>
 

@@ -7,6 +7,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
+	"github.com/mstojcevich/lambda-ng-go/assetmap"
 	tplt "github.com/mstojcevich/lambda-ng-go/template"
 )
 
@@ -26,7 +27,7 @@ func createIndexTemplate() {
 
 	// Render the template into a byte buffer
 	var tpl bytes.Buffer
-	err = indexTemplate.Execute(&tpl, tplt.CommonTemplateCtx{NoJS: false})
+	err = indexTemplate.Execute(&tpl, tplt.CommonTemplateCtx{AssetMap: assetmap.Assets.Map, NoJS: false})
 	if err != nil {
 		panic(err)
 	}

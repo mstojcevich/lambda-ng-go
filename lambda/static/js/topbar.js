@@ -2,18 +2,20 @@ var userDropdownToggled = false;
 
 // Wait for DOM to be loaded before doing stuff that will update the DOM
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("signOutBtn").addEventListener("click", signOut)
+
     // Update the authentication part of the topbar
     getSessionInfo(function (sessionInfo) {
         // Successful login, switch the login button to be a user details button
 
         let topbarAccount = document.getElementById("topbar-account");
-        topbarAccount.innerText = sessionInfo.username;
+        topbarAccount.textContent = sessionInfo.username;
 
         // Have the username button show the user dropdown
         topbarAccount.href = "#"; // Remove link to login
         topbarAccount.onclick = toggleUserDropdown; // Show the user dropdown when clicked
     }, function () {
-        document.getElementById("topbar-account").innerText = "Not Signed In";
+        document.getElementById("topbar-account").textContent = "Not Signed In";
     });
 });
 
@@ -55,18 +57,20 @@ function getCookie(name) {
 }
 
 // Signs the user out
-function signOut() {
+function signOut(e) {
+    e.preventDefault();
+
     let request = new XMLHttpRequest();
     request.open("DELETE", "/api/session");
 
     let accountArea = document.getElementById("topbar-account");
 
-    accountArea.innerText = "Signing out...";
+    accountArea.textContent = "Signing out...";
 
     request.onload = function () {
         if (request.status == 200) { // Success
             // Update the topbar to reflect being signed out
-            accountArea.innerText = "Not Signed In";
+            accountArea.textContent = "Not Signed In";
             accountArea.href = "/login";
             accountArea.onclick = null;
 
@@ -81,7 +85,7 @@ function signOut() {
             }
         } else {
             console.error(request.responseText);
-            accountArea.innerText = "Failed to sign out";
+            accountArea.textContent = "Failed to sign out";
         }
     }
 

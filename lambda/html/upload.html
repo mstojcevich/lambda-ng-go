@@ -31,7 +31,7 @@
                 <input type="submit">
             </form>
         {{ else }}
-            <h2 class="upload-instruction">Drag and drop or click <a href="#" onclick="document.getElementById('chooseFile').click();return false;">here</a>            to upload a file</h2>
+            <h2 class="upload-instruction">Drag and drop or click <a href="#" id="clickHere">here</a> to upload a file</h2>
         {{ end }}
 
         <p>By uploading a file, you agree that it is your original content. All uploads must adhere to the copyright laws of
@@ -46,7 +46,7 @@
         </ul>
 
         {{ if not .NoJS }}
-            <input type="file" id="chooseFile" style="visibility: hidden;" accept="{{ .AllowedExtensions }}" multiple>
+            <input type="file" id="chooseFile" accept="{{ .AllowedExtensions }}" hidden multiple>
         {{ end }}
     </main>
 

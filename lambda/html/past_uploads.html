@@ -16,7 +16,7 @@
     <main class="content">
         <div id="selection-management" class="selection-manage hidden">
             <h3 id="numSelectedLabel">0 items selected</h3>
-            <button onclick="deleteSelected()">Delete</button>
+            <button id="deleteSelectedBtn">Delete</button>
         </div>
         <noscript>
             <h2>JavaScript appears to be blocked or disabled. This page and most of Lambda will not work without JavaScript enabled.</h2>
@@ -49,15 +49,15 @@
         <div class="navRow">
             {{ if .NoJS }}
                 {{ if not (eq .PageNum 1) }}
-                    <a href="/nojs/user/uploads?page={{ add .PageNum -1 }}" id="goBack" onclick="prevPage(); return false;" class="navButton">Previous</a>
+                    <a href="/nojs/user/uploads?page={{ add .PageNum -1 }}" id="goBack" class="navButton">Previous</a>
                 {{ end }}
 
                 {{ if not (eq .PageNum .NumPages) }}
-                    <a href="/nojs/user/uploads?page={{ add .PageNum 1 }}" id="goNext" onClick="nextPage(); return false;" class="navButton">Next</a>
+                    <a href="/nojs/user/uploads?page={{ add .PageNum 1 }}" id="goNext" class="navButton">Next</a>
                 {{ end }}
             {{ else }}
-                <a href="" id="goBack" onclick="prevPage(); return false;" class="navButton hidden">Previous</a>
-                <a href="" id="goNext" onClick="nextPage(); return false;" class="navButton hidden">Next</a>
+                <a href="" id="goBack" class="navButton hidden">Previous</a>
+                <a href="" id="goNext" class="navButton hidden">Next</a>
             {{ end }}
         </div>
     </main>

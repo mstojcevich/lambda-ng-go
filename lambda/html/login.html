@@ -33,8 +33,8 @@
             {{ if .NoJS }}
                 <form action="/nojs/api/user/login" method="POST" id="loginForm">
             {{ else }}
-                <form action="/api/user/login" method="POST" id="loginForm" onsubmit="return login(this);">
-            {{ end}}
+                <form action="/api/user/login" method="POST" id="loginForm">
+            {{ end }}
                 <input type="text" name="username" placeholder="Username">
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" value="Sign In">

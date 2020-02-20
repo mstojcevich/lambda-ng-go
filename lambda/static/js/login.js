@@ -1,5 +1,14 @@
-function login(form) {
-    let fData = new FormData(form);
+document.addEventListener("DOMContentLoaded", function() {
+    registerEventHandlers();
+});
+
+function registerEventHandlers() {
+    document.getElementById("loginForm").addEventListener("submit", login);
+}
+
+function login(e) {
+    e.preventDefault();
+    let fData = new FormData(e.target);
 
     let request = new XMLHttpRequest();
     request.open("POST", "/api/user/login", true);
@@ -7,30 +16,36 @@ function login(form) {
     request.onload = function () {
         // If the login was successful, go to the homepage
         if (request.status == 200) {
-            window.location.href = "/"
+            window.location.href = "/";
         } else {
             // Login was unsuccessful, show the user the error
             let errorArea = document.getElementById("errorArea");
-            errorArea.innerHTML = ""; // Clear out all errors
+            errorArea.textContent = ""; // Clear out all errors
             try {
                 let response = JSON.parse(request.responseText);
-                console.log(response);
                 if (response.errors.length > 0) {
                     response.errors.forEach(function (error) {
-                        errorArea.innerHTML += "<div class=\"form-error\">" + error + "</div>";
+                        let errorDiv = document.createElement("div");
+                        errorDiv.className = "form-error";
+                        errorDiv.textContent = error;
+                        errorArea.appendChild(errorDiv);
                     });
                 } else {
-                    errorArea.innerHTML += "<div class=\"form-error\">Failed to login for unknown reason</div>";
+                    let errorDiv = document.createElement("div");
+                    errorDiv.className = "form-error";
+                    errorDiv.textContent = "Failed to login for unknown reason";
+                    errorArea.appendChild(errorDiv);
                 }
             } catch (e) {
                 console.error(e);
-                errorArea.innerHTML += "<div class=\"form-error\">Failed to login for unknown reason</div>";
+                let errorDiv = document.createElement("div");
+                errorDiv.className = "form-error";
+                errorDiv.textContent = "Failed to login for unknown reason";
+                errorArea.appendChild(errorDiv);
             }
         }
     }
 
     // Send the login info
     request.send(fData);
-
-    return false
 }

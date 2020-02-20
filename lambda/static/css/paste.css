@@ -90,3 +90,11 @@ body {
 pre {
     width: 100%;
 }
+
+.js-warning {
+    color: white;
+}
+
+.paste-area-label {
+    display: hidden
+}

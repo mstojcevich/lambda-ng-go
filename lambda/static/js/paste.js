@@ -8,9 +8,17 @@ document.addEventListener("DOMContentLoaded", function() {
         window.history.replaceState("backward", null, "/");
         window.location.href = "/login";
     });
+    registerEventHandlers();
 });
 
-function submitPaste() {
+function registerEventHandlers() {
+    document.getElementById("codeToggleBtn").addEventListener("click", toggleCode);
+    document.getElementById("submitBtn").addEventListener("click", submitPaste);
+}
+
+function submitPaste(e) {
+    e.preventDefault();
+
     let pastePlaintext = document.getElementById("paste-area").value;
 
     let encryptionKey = genEncKey(8);
@@ -76,7 +84,8 @@ function encrypt(text, key) {
     return sjcl.encrypt(key, text);
 }
 
-function toggleCode() {
+function toggleCode(e) {
+    e.preventDefault();
     if(!isCode) {
         isCode = true;
         document.getElementById("codeLabel").innerText = "CODE: YES";

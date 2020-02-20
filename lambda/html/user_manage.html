@@ -23,10 +23,10 @@
                     </li>
                 </ul>
 
-                API Key: <span id="apiKey" style="font-weight: bold">{{ .Session.APIKey | html }}</span>
+                API Key: <span id="apiKey">{{ .Session.APIKey | html }}</span>
             {{ end }}
         {{ else }}
-            API Key: <span id="apiKey" style="font-weight: bold">Loading...</span>
+            API Key: <span id="apiKey">Loading...</span>
         {{ end }}
     </main>
 

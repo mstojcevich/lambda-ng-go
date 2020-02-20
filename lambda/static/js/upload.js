@@ -4,6 +4,11 @@ const uploadURL = "/api/upload";
 const uploadDomain = "/";
 
 document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("clickHere").addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("chooseFile").click();
+    });
+
     getSessionInfo(function() {}, function() {
         // Redirect the user to login if they aren't
         window.history.replaceState("backward", null, "/");

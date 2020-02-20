@@ -14,20 +14,20 @@
     {{ template "TopBar" . }}
 
     <noscript>
-        <span style="color: white;">Pastes need JavaScript enabled to function because they use end-to-end encryption</span>
+        <span class="js-warning">Pastes need JavaScript enabled to function because they use end-to-end encryption</span>
     </noscript>
 
     <main>
-        <label for="paste-area" style="display: none" hidden></label><textarea class="paste-area" id="paste-area"></textarea>
+        <label for="paste-area" class="paste-area-label" hidden></label><textarea class="paste-area" id="paste-area"></textarea>
     </main>
 
     <footer>
         <div class="bottom-buttons">
-            <a href="#" onclick="toggleCode()">
+            <a href="#" id="codeToggleBtn">
                 <div id="codeLabel">CODE: NO</div>
             </a>
             <a href="#">
-                <div class="submit" onclick="submitPaste()">SUBMIT</div>
+                <div class="submit" id="submitBtn">SUBMIT</div>
             </a>
         </div>
     </footer>

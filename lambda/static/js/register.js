@@ -1,6 +1,14 @@
-function register() {
-    let registerForm = document.getElementById("registerForm");
-    let fData = new FormData(registerForm);
+document.addEventListener("DOMContentLoaded", function() {
+    registerEventHandlers();
+});
+
+function registerEventHandlers() {
+    document.getElementById("registerForm").addEventListener("submit", register);
+}
+
+function register(e) {
+    e.preventDefault();
+    let fData = new FormData(e.target);
 
     let request = new XMLHttpRequest();
     request.open("POST", "/api/user/new", true);
@@ -13,12 +21,14 @@ function register() {
                 let response = JSON.parse(request.responseText);
                 if(response.errors.length > 0) {
                     let errorArea = document.getElementById("errorArea");
-                    errorArea.innerHTML = ""; // Clear the error list
+                    errorArea.textContent = ""; // Clear the error list
 
                     response.errors.forEach(function(error) {
-                        errorArea.innerHTML += "<div class=\"form-error\">" + error + "</div>";
+                        let errorDiv = document.createElement("div");
+                        errorDiv.className = "form-error";
+                        errorDiv.textContent = error;
+                        errorArea.appendChild(errorDiv);
                     });
-                    console.log("ayy");
                 }
             } catch(ex) {
                 console.error(ex);
@@ -30,6 +40,4 @@ function register() {
     }
 
     request.send(fData);
-
-    return false; // Get rid of browser's default action
 }

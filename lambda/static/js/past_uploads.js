@@ -7,12 +7,20 @@ var page = 1;
 var selectedImages = [];
 
 document.addEventListener("DOMContentLoaded", function() {
+    registerEventHandlers();
+
     getUploads();
 
     window.addEventListener("hashchange", function() {
         getUploads();
     });
-})
+});
+
+function registerEventHandlers() {
+    document.getElementById("goBack").addEventListener("click", prevPage);
+    document.getElementById("goNext").addEventListener("click", nextPage);
+    document.getElementById("deleteSelectedBtn").addEventListener("click", deleteSelected);
+}
 
 function getUploads() {
     // Set the selected page based on the URL
@@ -40,17 +48,17 @@ function getUploads() {
                 // Hide the go back button if there's nowhere to go back
                 let goBackButton = document.getElementById("goBack");
                 if(page > 1) {
-                    goBackButton.className = "navButton"
+                    goBackButton.className = "navButton";
                 } else {
-                    goBackButton.className = "navButton hidden"
+                    goBackButton.className = "navButton hidden";
                 }
 
                 // Hide the next button if there's nowhere to go next
                 let goFwdButton = document.getElementById("goNext");
                 if(page < numPages) {
-                    goFwdButton.className = "navButton"
+                    goFwdButton.className = "navButton";
                 } else {
-                    goFwdButton.className = "navButton hidden"
+                    goFwdButton.className = "navButton hidden";
                 }
 
                 response.files.forEach(function(upload) {
@@ -119,12 +127,14 @@ function getUploads() {
     xmlHttp.send();
 }
 
-function prevPage() {
+function prevPage(e) {
+    e.preventDefault();
     page = parseInt(page) - 1;
     window.location.hash = page;
 }
 
-function nextPage() {
+function nextPage(e) {
+    e.preventDefault();
     page = parseInt(page) + 1;
     window.location.hash = page;
 }
@@ -147,7 +157,9 @@ function toggleSelection(img, li) {
     }
 }
 
-function deleteSelected() {
+function deleteSelected(e) {
+    e.preventDefault();
+
     let toFinishCount = selectedImages.length;
 
     selectedImages.forEach(function(img) {

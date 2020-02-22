@@ -1,6 +1,9 @@
 package database
 
 import (
+	"log"
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // Needed for postgres DB
 	"github.com/mstojcevich/lambda-ng-go/config"
@@ -58,15 +61,29 @@ CREATE TABLE IF NOT EXISTS thumbnails (
 var DB = initDatabase()
 
 func initDatabase() *sqlx.DB {
-	db, err := sqlx.Connect("postgres", config.DBString)
+	// Open instead of connect to more gracefully handle the DB being initially unavailable.
+	db, err := sqlx.Open("postgres", config.DBString)
 
 	// Error establishing connection to DB
 	if err != nil {
 		panic(err)
 	}
 
+	for {
+		err := db.Ping()
+		if err == nil {
+			break
+		} else {
+			log.Printf("DB unavailable. Trying again... %s\n", err)
+			time.Sleep(5 * time.Second)
+		}
+	}
+
 	// Create the tables if they don't exist
-	db.Exec(schema)
+	_, err = db.Exec(schema)
+	if err != nil {
+		log.Printf("Error running schema SQL: %s\n", err)
+	}
 
 	return db
 }

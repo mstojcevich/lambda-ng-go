@@ -2,6 +2,9 @@
 
 # TODO cap_drop capabilities that aren't required
 version: "3.7"
+volumes:
+    clamav-data:
+    postgres-data:
 services:
     lambda:
         image: lambda:latest
@@ -31,6 +34,15 @@ services:
         build:
             context: ./
             dockerfile: clamav.Dockerfile
+        volumes:
+            - clamav-data:/data:ro
+    clam_freshener:
+        image: lambda_freshclam:latest
+        build:
+            context: ./
+            dockerfile: freshclam.Dockerfile
+        volumes:
+            - clamav-data:/data
     db:
         image: postgres:12.2-alpine   # TODO build our own postgres image, since this one contains build deps in it...
                                       # It's also not super clear that it doesn't run as root in the container by default.
@@ -38,8 +50,9 @@ services:
         environment:
             POSTGRES_USER: lambda_dev
             POSTGRES_PASSWORD: super-secret-dev-password
+            LANG: en_US.UTF-8
         volumes:
-            - ./run/postgres/data:/var/lib/postgresql/data
+            - postgres-data:/var/lib/postgresql/data
     proxy:
         image: nginx:1.16-alpine
         user: nginx  # don't run nginx as root. It drops its own privs, but still.
@@ -51,6 +64,8 @@ services:
         ports:
             - "80:8080"
             - "443:8443"
+        environment:
+            LANG: en_US.UTF-8
     redis:
         image: redis:5.0-alpine
         user: redis

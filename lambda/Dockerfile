@@ -1,7 +1,7 @@
 FROM golang:1.13-alpine AS build
 
 # Consistency across Lambda containers
-ENV LANG en_US.utf8
+ENV LANG en_US.UTF-8
 
 RUN apk --no-cache add \
     git \

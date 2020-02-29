@@ -215,18 +215,18 @@ func upload(ctx *fasthttp.RequestCtx) (responseURLs []string) {
 				if err != nil {
 					fmt.Println("Error scanning for viruses")
 					fmt.Println(err)
-				} else { // Virus scan successfully ran
-					rsp := <-response
-					if rsp.Status == clamd.RES_FOUND { // Malware found
-						fmt.Println("Malware found in " + filename)
-						fmt.Println(rsp)
+					return // don't make a thumbnail, fail loud-ish
+				}
+				rsp := <-response
+				if rsp.Status == clamd.RES_FOUND { // Malware found
+					fmt.Println("Malware found in " + filename)
+					fmt.Println(rsp)
 
-						// Delete the file
-						os.Remove(path)
-						deleteFileStmt.Exec(fileID)
+					// Delete the file
+					os.Remove(path)
+					deleteFileStmt.Exec(fileID)
 
-						return // End goroutine so thumbnail isn't made
-					}
+					return // End goroutine so thumbnail isn't made
 				}
 			}
 

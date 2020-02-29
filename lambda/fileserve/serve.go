@@ -44,7 +44,6 @@ func init() {
 		})
 		if err != nil {
 			fmt.Printf("Backblaze account ID: %s\n", config.BackblazeAccountID)
-			fmt.Printf("Backblaze app key: %s\n", config.BackblazeAppKey)
 			panic(err)
 		}
 

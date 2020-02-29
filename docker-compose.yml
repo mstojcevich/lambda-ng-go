@@ -73,3 +73,13 @@ services:
             - ./redis-dev/redis.conf:/redis.conf:ro
             - ./run/redis/data:/data
         command: ["redis-server", "/redis.conf"]
+    b2_uploader:
+        image: lambda-b2-uploader:latest
+        build: lambda-b2-uploader/
+        volumes:
+            - ./run/lambda/files:/files
+        depends_on:
+            - db
+        environment:
+            LMDA_UPLOAD_DIR: "/files/"
+            LMDA_DB_CONNSTR: host=db port=5432 user=lambda_dev password=super-secret-dev-password dbname=lambda_dev sslmode=disable

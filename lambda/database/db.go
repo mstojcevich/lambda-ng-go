@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS thumbnails (
 	height integer NOT NULL,
 	url varchar NOT NULL UNIQUE
 );
+
+CREATE INDEX IF NOT EXISTS files_in_b2 ON files (in_b2);
 `
 
 // DB is a connection to the primary Lambda database

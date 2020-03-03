@@ -77,9 +77,9 @@ func loadConfig() error {
 	var exists bool
 
 	blazeAppID, exists = os.LookupEnv("LMDA_BLAZE_APP_ID")
-	os.Unsetenv("LMDA_BLAZE_ID")
+	os.Unsetenv("LMDA_BLAZE_APP_ID")
 	if !exists {
-		return errors.New("Missing LMDA_BLAZE_ID environment variable")
+		return errors.New("Missing LMDA_BLAZE_APP_ID environment variable")
 	}
 
 	blazeAppKey, exists = os.LookupEnv("LMDA_BLAZE_KEY")
@@ -88,16 +88,16 @@ func loadConfig() error {
 		return errors.New("Missing LMDA_BLAZE_KEY environment variable")
 	}
 
-	dbConnString, exists = os.LookupEnv("LMDA_DB_CONNSTR")
-	os.Unsetenv("LMDA_DB_CONNSTR")
-	if !exists {
-		return errors.New("Missing LMDA_DB_CONNSTR environment variable")
-	}
-
 	blazeBucketID, exists = os.LookupEnv("LMDA_BLAZE_BUCKET")
 	os.Unsetenv("LMDA_BLAZE_BUCKET")
 	if !exists {
 		return errors.New("Missing LMDA_BLAZE_BUCKET environment variable")
+	}
+
+	dbConnString, exists = os.LookupEnv("LMDA_DB_CONNSTR")
+	os.Unsetenv("LMDA_DB_CONNSTR")
+	if !exists {
+		return errors.New("Missing LMDA_DB_CONNSTR environment variable")
 	}
 
 	uploadDir, exists = os.LookupEnv("LMDA_UPLOAD_DIR")

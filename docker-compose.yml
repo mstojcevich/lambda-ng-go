@@ -83,3 +83,19 @@ services:
         environment:
             LMDA_UPLOAD_DIR: "/files/"
             LMDA_DB_CONNSTR: host=db port=5432 user=lambda_dev password=super-secret-dev-password dbname=lambda_dev sslmode=disable
+    db_backupper:
+        image: lambda-db-backupper:latest
+        build: db-backupper/
+        depends_on:
+            - db
+        environment:
+            LMDA_ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000001"
+            LMDA_MAC_KEY: "0000000000000000000000000000000000000000000000000000000000000002"
+            PGDATABASE: "lambda_dev"
+            PGHOST: "db"
+            PGPORT: "5432"
+            PGUSER: "lambda_dev"
+            PGPASSWORD: "super-secret-dev-password"
+            LMDA_BLAZE_APP_ID: "002558a11678c690000000003"
+            LMDA_BLAZE_KEY: "K002VhrXIBXJTF7UNfyPqeR50UjkC/A"
+            LMDA_BLAZE_BUCKET: "lambda-sandbox"

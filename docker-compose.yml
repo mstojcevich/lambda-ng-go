@@ -44,8 +44,7 @@ services:
         volumes:
             - clamav-data:/data
     db:
-        image: postgres:12.2-alpine   # TODO build our own postgres image, since this one contains build deps in it...
-                                      # It's also not super clear that it doesn't run as root in the container by default.
+        image: postgres:12.2-alpine
         user: postgres
         environment:
             POSTGRES_USER: lambda_dev

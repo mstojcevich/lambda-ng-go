@@ -39,7 +39,7 @@ func init() {
 	if len(config.BackblazeAccountID) > 0 {
 		var err error
 		B2, err = backblaze.NewB2(backblaze.Credentials{
-			AccountID:      config.BackblazeAccountID,
+			KeyID:      config.BackblazeAccountID,
 			ApplicationKey: config.BackblazeAppKey,
 		})
 		if err != nil {

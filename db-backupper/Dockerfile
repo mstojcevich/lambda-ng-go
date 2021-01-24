@@ -1,4 +1,4 @@
-FROM golang:1.13-alpine AS build
+FROM golang:1.15-alpine3.13 AS build
 
 # Consistency across Lambda containers
 ENV LANG en_US.UTF-8
@@ -12,7 +12,7 @@ WORKDIR /go/src/github.com/mstojcevich/lambda-db-backupper
 
 RUN go build db_backupper.go
 
-FROM alpine:3.11
+FROM alpine:3.13
 RUN apk add --no-cache postgresql-client && \
     addgroup -g 670 -S lambda_db_backupper && \
     adduser -S -s /sbin/nologin -G lambda_db_backupper -u 670 -H -D lambda_db_backupper

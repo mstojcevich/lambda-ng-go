@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.13
 
 # Consistency across Lambda containers
 ENV LANG en_US.UTF-8

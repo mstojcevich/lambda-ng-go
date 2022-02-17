@@ -173,8 +173,10 @@ function deleteSelected(e) {
 }
 
 function deleteImage(name, callback) {
-  xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = callback;
-  xmlHttp.open("DELETE", "/file/" + name, true);
-  xmlHttp.send();
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function(e) {
+        if (e.target.readyState === 4) callback();
+    };
+    xmlHttp.open("DELETE", "/file/" + name, true);
+    xmlHttp.send();
 }

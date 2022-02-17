@@ -173,7 +173,7 @@ function deleteSelected(e) {
 }
 
 function deleteImage(name, callback) {
-    xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function(e) {
         if (e.target.readyState === 4) callback();
     };
